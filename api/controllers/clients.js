@@ -40,3 +40,33 @@ exports.createClient = function(req, res, next) {
     });
 
 }
+
+exports.getAllClients = function(req, res, next) { 
+    
+    Client.find()
+    .select()
+    .exec()
+    .then(function(docs) {
+        var response = {
+            count: docs.length, 
+            clients: docs.map(function(doc) {   //re-format JSON object to get rid of unwanted info; e.g. __v property
+                return {
+                    _id: doc._id, 
+                    firstName: doc.firstName, 
+                    lastName: doc.lastName,  
+                    fullName: doc.fullName,  
+                    address: doc.address, 
+                    phoneNumber: doc.phoneNumber, 
+                    email: doc.email
+                }
+            })
+        };
+        res.status(200).json(response);
+    })
+    .catch(function(err) { 
+        res.status(500).json({
+            error: err
+        });
+    }); 
+    
+}

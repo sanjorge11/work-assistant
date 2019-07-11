@@ -6,9 +6,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var clientRoutes = require('./api/routes/clients');
+var projectRoutes = require('./api/routes/projects'); 
 
-mongoose.connect('mongodb+srv://admin:' + '381025JFdf' + '@rest-api-db-xldnz.mongodb.net/test?retryWrites=true&w=majority',
-{ useNewUrlParser: true }); 
+//                                          password                     url parameter points to 'root' database in mongoDB
+mongoose.connect('mongodb+srv://admin:' + '381025JFdf' + '@rest-api-db-xldnz.mongodb.net/'+ 'root' + '?retryWrites=true&w=majority',
+{ useNewUrlParser: true, useCreateIndex: true });   //fixed deprecation warning
 app.use(morgan('dev')); //log HTTP requests on console
 app.use(bodyParser.json());
 
@@ -30,7 +32,8 @@ app.use(function(req,res,next) {
 });
 
 //Routes
-app.use('clients', clientRoutes); 
+app.use('/clients', clientRoutes); 
+app.use('/projects', projectRoutes); 
 
 //Error-Handling
 app.use(function(req, res, next) {  //404 if no match to routes defined 

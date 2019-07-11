@@ -11,7 +11,7 @@ var clientSchema = mongoose.Schema({
     email: {
         type: String, 
         required: true, 
-        unique: true, 
+        unique: false,  //multiple clients can use same email if they need to do so
         match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/ //regular expression for valid email address
     }
 }); 

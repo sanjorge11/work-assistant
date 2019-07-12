@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 
 var clientRoutes = require('./api/routes/clients');
 var projectRoutes = require('./api/routes/projects'); 
+var quoteRoutes = require('./api/routes/quotes'); 
 
 //                                          password                     url parameter points to 'root' database in mongoDB
 mongoose.connect('mongodb+srv://admin:' + '381025JFdf' + '@rest-api-db-xldnz.mongodb.net/'+ 'root' + '?retryWrites=true&w=majority',
@@ -34,6 +35,7 @@ app.use(function(req,res,next) {
 //Routes
 app.use('/clients', clientRoutes); 
 app.use('/projects', projectRoutes); 
+app.use('/quotes', quoteRoutes);
 
 //Error-Handling
 app.use(function(req, res, next) {  //404 if no match to routes defined 

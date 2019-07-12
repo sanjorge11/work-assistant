@@ -1,5 +1,5 @@
 
-var Quote = require('../controllers/quotes'); 
+var Quote = require('../models/quote'); 
 var mongoose = require('mongoose'); 
 
 exports.getAllQuotes = function(req, res, next) { 
@@ -39,4 +39,64 @@ exports.getAllQuotes = function(req, res, next) {
             error: err
         });
     }); 
+}
+
+exports.createQuote = function(req, res, next) {
+
+    var quote = new Quote({
+        _id: new mongoose.Types.ObjectId(),
+        projectTotal: req.body.projectTotal, 
+        header: req.body.header, 
+        to_title: req.body.to_title, 
+        logo: req.body.logo,
+        from: req.body.from,     
+        to: req.body.to,
+        date: req.body.date,
+        currency: req.body.currency,
+        number: req.body.number,   
+        payment_terms: req.body.payment_terms,   
+        items: req.body.items, 
+        fields: req.body.fields,
+        tax: req.body.tax,
+        discounts: req.body.discounts,
+        shipping: req.body.shipping,
+        notes: req.body.notes,
+        terms: req.body.terms
+    }); 
+
+    quote.save().then(function(result) {
+        console.log(result); 
+
+        res.status(201).json({
+            message: 'Successfully added a new quote',
+            quote: {
+                _id: result._id,
+                projectTotal: result.projectTotal, 
+                header: result.header, 
+                to_title: result.to_title, 
+                logo: result.logo,
+                from: result.from,     
+                to: result.to,
+                date: result.date,
+                currency: result.currency,
+                number: result.number,   
+                payment_terms: result.payment_terms,   
+                items: result.items, 
+                fields: result.fields,
+                tax: result.tax,
+                discounts: result.discounts,
+                shipping: result.shipping,
+                notes: result.notes,
+                terms: result.terms
+            }
+        });
+
+    }).catch(function(err) {
+        console.log(err); 
+
+        res.status(500).json({
+            error: err
+        });
+    });
+
 }

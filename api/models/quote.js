@@ -13,7 +13,7 @@ var quoteSchema = mongoose.Schema({
     currency: { type: String, default: "usd" },
     number: { type: String, required: true },   //"INV-0001"
     payment_terms: { type: String, required: false },    //"Auto-Billed - Do Not Pay" (under the 'Date')
-    items: [Schema.Types.Mixed], 
+    items: [mongoose.Schema.Types.Mixed], 
     // [        //the items array should be of this 
     //     {
     //         name: "Subscription to Starter",
@@ -22,12 +22,12 @@ var quoteSchema = mongoose.Schema({
     //         description: "The best gizmos there are around."     (this is optional)
     //     }
     // ]
-    fields: {   //can be null, then won't add any fields 
-        tax: { type: Boolean, default: "%"},
+    fields: {  //can be null, then won't add any fields but use defaults; tax, discounts, and shipping
+        tax: { type: String, default: "%"},     //will not display unless you specify a value
         discounts: { type: Boolean, default: false },
         shipping: { type: Boolean, default: false }
     },
-    tax: { type: Number, required: false },
+    tax: { type: Number, required: false },     
     discounts: { type: Number, required: false },
     shipping: { type: Number, required: false },
     notes: { type: String, required: false },

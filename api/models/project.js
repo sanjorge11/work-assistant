@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var projectSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId, 
     clientId: String, 
-    quotes: [Schema.Types.Mixed]     //array of type Quote
+    quotes: [mongoose.Schema.Types.Mixed]     //array of type Quote
 }); 
 
 module.exports = mongoose.model('Project', projectSchema); 

@@ -32,7 +32,12 @@ app.use(function(req,res,next) {
     next(); 
 });
 
-//Routes
+//Static Route
+//Note: __dirname will resolve to your project folder
+//here it is -> /Users/sanjorge/work-assistant
+app.use(express.static(__dirname + '/static'));
+
+//REST API Routes
 app.use('/clients', clientRoutes); 
 app.use('/projects', projectRoutes); 
 app.use('/quotes', quoteRoutes);

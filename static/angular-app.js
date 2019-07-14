@@ -3,17 +3,19 @@ var app = angular.module("angular-app", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        template: "<h2> Home </h2>",
+        templateUrl: "/views/home.htm",
+        controller: "home-controller"
     })
     .when("/clients", {
-        template: "<h2> Clients </h2>",
-        // ,
-        // controller : "londonCtrl"
+        templateUrl: "/views/clients.htm",
+        controller : "clients-controller"
+    })
+    .when("/projects", {
+        templateUrl: "/views/projects.htm",
+        controller: "projects-controller"
+    })
+    .when("/quotes", {
+        templateUrl: "/views/quotes.htm",
+        controller: "quotes-controller"
     });
 });
-// app.controller("londonCtrl", function ($scope) {
-//     $scope.msg = "I love London";
-// });
-// app.controller("parisCtrl", function ($scope) {
-//     $scope.msg = "I love Paris";
-// });

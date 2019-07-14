@@ -14,7 +14,11 @@
 
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="angular-app.js"></script>
-  <script src="controller.js"></script>
+  <script src="controllers/home-controller.js" type="text/javascript"></script>
+  <script src="controllers/clients-controller.js" type="text/javascript"></script>
+  <script src="controllers/projects-controller.js" type="text/javascript"></script>
+  <script src="controllers/quotes-controller.js" type="text/javascript"></script>
+
 
   <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAJJWnAHaSxQCsxqQAan2uAAc2aQCZ0KoAf6tdANfn4wDb8uUAAsP/AEp0jwDP6f8AZK2TAAYylgD/mawApLGeADpguAAAADMALolmADCGfwA9xuQAP2NlAAek4wAdT0wA5J6oAAYZLwCxuIIA/KahAM5zbAD/vsEAAKTLABa63wActPgAAHOGAK7FygDZ3NIAuLHhAPb04ABWdIgAFSiSADmAeABXfeMA2+TdAMqdpQAnXHMAACtyAPGGiQC2l54A0dDcAAANQgB6mGwA2tbsAACg6ACAk+YABIqAAFmC/wCHqO0AGavhAJG7twA+vbUAQ45qAP/m3wBMgloAJUTyAO/JrQDy6egAN7HgAAtCUwAAhdoAGFPqAMfsyQC0wsQAAgjGAAAd/wATNcsAd77rAFpuYQCIkYEAYXiHAMXkvwBgo4IAHChSAEN+gADkuK0Aj3pOALfHpgBWo6QA8vjYAJ+r1QCyyakARXetAGt9WAAAoNoAAAimAL7izgCOsroALKjKAP/R0gCcsf8A/6erAESU0ABjr8UABKLVAFOP/wAQvdMAAM7/AInItwBibTwAzsL3AP/WzQDBm44AqKmqACSs8gAFmuQAAAWwAP/S4QABpfcAAMX4AIfIhgDRxe8AyNDIAOOWegAclJkAWGbWAJB91QC9zt8AVHi0AAAiTgC3anwA9pajAClXuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC1EWgAAAAAAAAAAAAAAACdbDk8AAAAAAAAAAAAAABALKl4EAAAAAAAAAAAAAABNfHMFCQAAAAAAACMxWFApg0kofgAAAAAAAE4yEhpSf0suRwAAAAAAABtVeDY5YwwCPwAAAAAAAAZsYiwwWThoEVwAAAAAACQTeQ8dehl9RkoYJgAAAEIUIEyBL4JkHiVAgAMAAABTaWp1ZXAcVEE+NBYrAAAADTxdRQoXZkhudDN3AAAAAAA7ImdxcnYVbW8HAAAAAAAAAAhXAUMhNR89AAAAAAAAAAAAAGt7YTo3XwAAAAAAAAAAAAAAAGBRVgAAAAAAAP/4AAD/8AAA/+AAAP/gAAD8AQAA+AMAAPAHAADgBwAAwAMAAIADAACAAwAAgAcAAMAPAADgHwAA+B8AAP4/AAA=" rel="icon" type="image/x-icon" />
 </head>
@@ -26,9 +30,10 @@
             <a class="navbar-brand" href="#/!">Work Assistant</a>
           </div>
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#/!">Home</a></li>
-            <li><a href="#!clients">Clients</a></li>
-            <li><a href="#!project">Projects</a></li>
+            <!-- removed active class -->
+            <li><a href="#/!">Home</a></li>
+            <li ng-class="{'active': $scope.currentState === 'clients'}"><a href="#!clients">Clients</a></li>
+            <li><a href="#!projects">Projects</a></li>
             <li><a href="#!quotes">Quotes</a></li>
           </ul>
         </div>
@@ -36,9 +41,6 @@
     
     <div class="container">
         <div ng-view></div>
-      <h1>My First Bootstrap Page</h1>
-      <p>This part is inside a .container class.</p> 
-      <p>The .container class provides a responsive fixed width container.</p>           
     </div>
 
 </body>

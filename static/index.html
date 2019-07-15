@@ -4,10 +4,13 @@
   <title>Work Assistant</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+  <!-- Old Bootstrap and jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
+
+  <!-- Angular -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
@@ -30,9 +33,8 @@
             <a class="navbar-brand" href="#/!">Work Assistant</a>
           </div>
           <ul class="nav navbar-nav">
-            <!-- removed active class -->
             <li><a href="#/!">Home</a></li>
-            <li ng-class="{'active': $scope.currentState === 'clients'}"><a href="#!clients">Clients</a></li>
+            <li><a href="#!clients">Clients</a></li>
             <li><a href="#!projects">Projects</a></li>
             <li><a href="#!quotes">Quotes</a></li>
           </ul>

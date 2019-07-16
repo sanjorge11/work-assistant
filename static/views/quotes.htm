@@ -1,2 +1,18 @@
-
-<h2> Quotes </h2>
+    
+    <h3>Quotes</h3>  
+    
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Client Name</th>
+            <th>Grand Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="quote in quotesArr.projects">
+            <td>{{ quote.to }}</td>
+            <td>{{ quote.projectTotal }}</td>
+        </tr>
+        </tbody>
+    </table> 
+    

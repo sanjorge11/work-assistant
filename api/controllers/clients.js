@@ -70,3 +70,29 @@ exports.createClient = function(req, res, next) {
     });
 
 }
+
+exports.updateClient = function(req, res, next) {
+    var id = req.params.clientId;
+
+    var props = req.body;
+
+    
+    //we dynamically create an object that has all properties we want updated
+    //$set is a propery understood by mongoose to know that the following properties
+    //are to be updated with the patch request
+    Client.updateOne({ _id: id }, { $set: props })
+    .exec()
+    .then(function(result) { 
+      console.log(result); 
+      res.status(200).json({
+        message: 'Client information updated'
+      }); 
+    })
+    .catch(function(err) { 
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    }); 
+   
+}

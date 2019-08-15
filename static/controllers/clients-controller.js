@@ -2,10 +2,6 @@
 app.controller("clients-controller", function ($scope, $http) {
     
     var vm = $scope; 
-    vm.formFirstName = '';
-    vm.formLastName = '';
-    vm.formAddress = '';
-    vm.formEmail = ''; 
 
     
     vm.getAllClients = function() {
@@ -22,10 +18,10 @@ app.controller("clients-controller", function ($scope, $http) {
         var url = "http://localhost:8080/clients"; 
         var parameter = JSON.stringify(
             {
-                firstName: vm.formFirstName, 
-                lastName: vm.formLastName, 
-                address: vm.formAddress, 
-                email: vm.formEmail
+                firstName: vm.myForm.formFirstName, 
+                lastName: vm.myForm.formLastName, 
+                address: vm.myForm.formAddress, 
+                email: vm.myForm.formEmail
             }
         );
 
@@ -35,6 +31,52 @@ app.controller("clients-controller", function ($scope, $http) {
             vm.getAllClients(); 
           });
 
+    }
+
+    vm.updateClient = function() { 
+
+        var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
+        var parameter = JSON.stringify(
+            {
+                firstName: vm.myForm.formFirstName, 
+                lastName: vm.myForm.formLastName, 
+                address: vm.myForm.formAddress, 
+                email: vm.myForm.formEmail
+            }
+        );
+
+        $http.put(url, parameter).
+        then(function(data) {
+            $('#myModal').modal("hide");    
+            vm.getAllClients(); 
+        });
+
+    }
+
+    vm.openModal = function(client) {
+        $("#myModal").modal(); 
+
+        vm.myForm.clientId = client._id;
+        vm.myForm.formFirstName = client.firstName; 
+        vm.myForm.formLastName = client.lastName; 
+        vm.myForm.formAddress = client.address;
+        vm.myForm.formEmail = client.email; 
+        
+        vm.toggleEditMode(true); 
+
+    }
+
+    vm.toggleEditMode = function(bool) { 
+        if(!bool) vm.clearForm();
+
+        vm.myForm.formEditMode = bool; 
+    }
+
+    vm.clearForm = function() { 
+        vm.myForm.formFirstName = ''; 
+        vm.myForm.formLastName = ''; 
+        vm.myForm.formAddress = '';
+        vm.myForm.formEmail = ''; 
     }
 
     vm.getAllClients(); 

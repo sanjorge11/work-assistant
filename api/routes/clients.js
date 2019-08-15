@@ -8,4 +8,6 @@ router.get('/', ClientsController.getAllClients);
 
 router.post('/', ClientsController.createClient); 
 
+router.put('/:clientId', ClientsController.updateClient);
+
 module.exports = router; 

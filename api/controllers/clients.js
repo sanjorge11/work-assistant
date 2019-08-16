@@ -76,7 +76,6 @@ exports.updateClient = function(req, res, next) {
 
     var props = req.body;
 
-    
     //we dynamically create an object that has all properties we want updated
     //$set is a propery understood by mongoose to know that the following properties
     //are to be updated with the patch request
@@ -95,4 +94,24 @@ exports.updateClient = function(req, res, next) {
       });
     }); 
    
+}
+
+exports.deleteClient = function(req, res, next) {
+
+    var id = req.params.clientId; 
+
+    Client.deleteOne({_id: id})
+    .exec()
+    .then(function(result) { 
+        res.status(200).json({
+            message: 'Client deleted'
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    });
+
 }

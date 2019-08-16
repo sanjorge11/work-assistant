@@ -53,6 +53,19 @@ app.controller("clients-controller", function ($scope, $http) {
 
     }
 
+    vm.deleteClient = function() { 
+        
+        var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
+
+        $http.delete(url, null)
+        .then(function(data) {
+            $('#confirmDelete').modal("hide");    
+            $('#myModal').modal("hide");   
+            vm.getAllClients(); 
+        }); 
+        
+    }
+
     vm.openModal = function(client) {
         $("#myModal").modal(); 
 
@@ -62,6 +75,8 @@ app.controller("clients-controller", function ($scope, $http) {
         vm.myForm.formAddress = client.address;
         vm.myForm.formEmail = client.email; 
         
+        //if edit mode is true, then primary modal has more 
+        //options to edit client information 
         vm.toggleEditMode(true); 
 
     }

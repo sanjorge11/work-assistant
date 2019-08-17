@@ -13,7 +13,8 @@ exports.getAllProjects = function(req, res, next) {
             projects: docs.map(function(doc) {
                 return { 
                     _id: doc._id, 
-                    clientId: doc.clientId
+                    clientId: doc.clientId,
+                    description: doc.description
                 }
             })
         };
@@ -31,7 +32,9 @@ exports.createProject = function(req, res, next) {
 
     var project = new Project({
         _id: new mongoose.Types.ObjectId(), 
-        clientId: req.body.clientId
+        clientId: req.body.clientId,
+        description: req.body.description,
+        quotes: []
     }); 
 
     project.save().then(function(result) {

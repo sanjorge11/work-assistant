@@ -6,6 +6,8 @@ var ClientsController = require('../controllers/clients');
 
 router.get('/', ClientsController.getAllClients);
 
+router.get('/:clientId', ClientsController.getClient)
+
 router.post('/', ClientsController.createClient); 
 
 router.put('/:clientId', ClientsController.updateClient);

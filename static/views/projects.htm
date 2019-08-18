@@ -31,6 +31,15 @@
                         Description: &nbsp; 
                         <input ng-if="!myForm.formEditMode" type="text" ng-model="myForm.description">
                         <span ng-if="myForm.formEditMode"> {{myForm.description}} </span>
+                        <br> <br>
+                        <div ng-if="myForm.formEditMode">
+                        Create Quote: &nbsp; 
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create</button>
+                        </div>
+                        <!-- <br> 
+                        <div>
+                            Count: 
+                        </div> -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -41,6 +50,50 @@
           
         </div>
     </div>
+
+<!-- Quote Creation Modal -->
+<div id="quoteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create Quote</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <form name="quoteForm">
+                        <div>
+                            Client Full Name: {{currentClient.fullName}}
+                        </div>
+                        <div>
+                            Client Address: {{currentClient.address}}
+                        </div>
+                        <div>
+                            Client Email: {{currentClient.email}}
+                        </div>
+                        <div>
+                            Description: &nbsp; 
+                            <input type="text" ng-model="quoteForm.description"> &nbsp; &nbsp;
+                            Cost: &nbsp;
+                            <input type="text" ng-model="quoteForm.cost">
+                        </div>
+                        <div>
+                            Notes: &nbsp; 
+                            <input type="text" ng-model="quoteForm.notes">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" ng-click="createQuote()">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>  
+                </div>
+            </div>
+          
+        </div>
+</div>
     
     <div class="row">
         <div class="col-sm-12">&nbsp;</div>

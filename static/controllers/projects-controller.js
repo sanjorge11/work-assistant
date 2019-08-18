@@ -48,6 +48,36 @@ app.controller("projects-controller", function ($scope, $http) {
               });
     
         }
+
+        vm.getClientInfo = function() { 
+
+            var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
+
+            $http.get(url)
+            .then(function(response) {
+                vm.currentClient = response.data.client; 
+                console.log(vm.currentClient); 
+            }); 
+
+        }
+
+        vm.createQuote = function() { 
+            
+            var quote = {
+                from: "Jorge A Fuentes\n704-400-8160", 
+                to: vm.currentClient.fullName + "\n" + vm.currentClient.address + "\n" + vm.currentClient.email,
+                items: [
+                    {
+                        name: vm.quoteForm.description,
+                        quantity: 1,
+                        unit_cost: vm.quoteForm.cost, 
+                    }
+                ]
+            }
+
+            console.log(quote); 
+
+        }
     
         vm.mapToClient = function(id) {
             for(var i=0; i<vm.clientsArr.clients.length; i++) { 
@@ -64,6 +94,9 @@ app.controller("projects-controller", function ($scope, $http) {
             vm.myForm.projectId = project._id;
             vm.myForm.clientName = vm.mapToClient(project.clientId).fullName; 
             vm.myForm.description = project.description; 
+            vm.myForm.clientId = project.clientId; 
+
+            vm.getClientInfo(); 
             
             //if edit mode is true, then primary modal has more 
             //options to edit client information 

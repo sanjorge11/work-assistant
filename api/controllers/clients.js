@@ -32,6 +32,30 @@ exports.getAllClients = function(req, res, next) {
     
 }
 
+exports.getClient = function(req, res, next) { 
+
+    var id = req.params.clientId; 
+
+    Client.findById(id)
+    .exec()
+    .then(function(doc) {
+        if(doc) { 
+            res.status(200).json({
+                client: doc
+            });
+        } else { 
+            res.status(404).json({
+                message: "Client not found"
+            });
+        }
+    })
+    .catch(function(err) { 
+        console.log(err);
+        res.status(500).json({error: err}); 
+    });
+
+}
+
 exports.createClient = function(req, res, next) { 
     
     var client = new Client({

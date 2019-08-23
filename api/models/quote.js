@@ -31,7 +31,8 @@ var quoteSchema = mongoose.Schema({
     discounts: { type: Number, required: false },
     shipping: { type: Number, required: false },
     notes: { type: String, required: false },
-    terms: { type: String, required: false }
+    terms: { type: String, required: false },
+    quotePDFpath: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Quote', quoteSchema); 

@@ -62,10 +62,18 @@ app.controller("projects-controller", function ($scope, $http) {
         }
 
         vm.createQuote = function() { 
-            
+
+            var url = "http://localhost:8080/quotes"; 
+
+            var clientFullName = vm.currentClient.fullName.length > 0 ? vm.currentClient.fullName + "\n" : ""; 
+            var clientAddress = vm.currentClient.address.length > 0 ? vm.currentClient.address + "\n" : ""; 
+            var clientEmail = vm.currentClient.email.length > 0 ? vm.currentClient.email : ""; 
+
             var quote = {
                 from: "Jorge A Fuentes\n704-400-8160", 
-                to: vm.currentClient.fullName + "\n" + vm.currentClient.address + "\n" + vm.currentClient.email,
+                to: clientFullName + clientAddress + clientEmail, 
+                number: "#1", 
+                projectTotal: vm.quoteForm.cost, 
                 items: [
                     {
                         name: vm.quoteForm.description,
@@ -75,7 +83,15 @@ app.controller("projects-controller", function ($scope, $http) {
                 ]
             }
 
-            console.log(quote); 
+            var parameter = JSON.stringify(quote);
+
+            $http.post(url, parameter).
+            then(function(data) {
+                $('#myModal').modal("hide");    
+                vm.getAllProjects(); 
+            });
+
+            //console.log(quote); 
 
         }
     

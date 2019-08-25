@@ -4,7 +4,7 @@
             <h2>Create new project</h2> 
         </div>
         <div class="col-sm-1" style="margin-top: 20px; margin-bottom: 10px;">
-            <button type="button" class="btn btn-success"data-toggle="modal" data-target="#myModal">Create</button>
+            <button ng-click="toggleEditMode(false)" type="button" class="btn btn-success"data-toggle="modal" data-target="#myModal">Create</button>
         </div>
     </div>
     
@@ -64,13 +64,13 @@
                 <div class="modal-body text-center">
                     <form name="quoteForm">
                         <div>
-                            Client Full Name: {{currentClient.fullName}}
+                            Client Full Name: {{quoteForm.fullName}}
                         </div>
                         <div>
-                            Client Address: {{currentClient.address}}
+                            Client Address: {{quoteForm.address}}
                         </div>
                         <div>
-                            Client Email: {{currentClient.email}}
+                            Client Email: {{quoteForm.email}}
                         </div>
                         <div>
                             Description: &nbsp; 
@@ -111,7 +111,7 @@
         <tbody>
         <tr ng-dblclick="openModal(project)" ng-repeat="project in projectsArr.projects">
             <td>{{ project._id }}</td>
-            <td>{{ mapToClient(project.clientId).fullName }}</td>
+            <td>{{ filterClient(project.clientId).fullName }}</td>
         </tr>
         </tbody>
     </table> 

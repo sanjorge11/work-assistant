@@ -12,6 +12,7 @@ var quoteRoutes = require('./api/routes/quotes');
 //                                          password                     url parameter points to 'root' database in mongoDB
 mongoose.connect('mongodb+srv://admin:' + '381025JFdf' + '@rest-api-db-xldnz.mongodb.net/'+ 'root' + '?retryWrites=true&w=majority',
 { useNewUrlParser: true, useCreateIndex: true });   //fixed deprecation warning
+
 app.use(morgan('dev')); //log HTTP requests on console
 app.use(bodyParser.json());
 
@@ -35,7 +36,7 @@ app.use(function(req,res,next) {
 //Static Route
 //Note: __dirname will resolve to your project folder
 //here it is -> /Users/sanjorge/work-assistant
-app.use(express.static(__dirname + '/static'));
+app.use(express.static(__dirname + '/static'));     //don't need route to static folder to fetch html/js files
 
 //REST API Routes
 app.use('/clients', clientRoutes); 

@@ -44,6 +44,75 @@ exports.getAllQuotes = function(req, res, next) {
     }); 
 }
 
+exports.getQuote = function(req, res, next) { 
+    
+    var id = req.params.quoteId;
+
+    Quote.findById(id)
+    .select() 
+    .exec()
+    .then(function(doc) {
+        var response = {
+            _id: doc._id,
+            projectTotal: doc.projectTotal, 
+            header: doc.header, 
+            to_title: doc.to_title, 
+            logo: doc.logo,
+            from: doc.from,     
+            to: doc.to,
+            date: doc.date,
+            currency: doc.currency,
+            number: doc.number,   
+            payment_terms: doc.payment_terms,   
+            items: doc.items, 
+            fields: doc.fields,
+            tax: doc.tax,
+            discounts: doc.discounts,
+            shipping: doc.shipping,
+            notes: doc.notes,
+            terms: doc.terms,
+            quotePDFpath: doc.quotePDFpath
+        }
+        res.status(200).json(response);
+    })
+    .catch(function(err) {
+        res.status(500).json({
+            error: err
+        });
+    }); 
+
+}
+
+exports.getQuotePDF = function(req, res, next) { 
+
+    var id = req.params.quoteId; 
+
+    Quote.findById(id)
+    .select("_id quotePDFpath")
+    .exec()
+    .then(function(doc) {
+        console.log("Fetched quote upload", doc);
+        if(doc) { 
+
+            var data = fs.readFileSync(__dirname + '/../../' + doc.quotePDFpath);    // uploads/quoteId.pdf
+            res.contentType("application/pdf");
+            res.send(data);
+
+        } else {
+            res.status(404).json({
+                message: "No quote with ID: " + doc._id + "found"
+            });
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    }); 
+
+}
+
 exports.createQuote = function(req, res, next) {
 
     var quote = new Quote({
@@ -68,8 +137,8 @@ exports.createQuote = function(req, res, next) {
         quotePDFpath: null
     }); 
 
-    generateInvoice(quote, (quote._id+'.pdf'), function() {
-        console.log("Saved invoice to " + (quote._id+'.pdf'));
+    generateQuote(quote, (quote._id+'.pdf'), function() {
+        console.log("Saved Quote to " + (quote._id+'.pdf'));
 
         var pdfPath = 'uploads/'+(quote._id+'.pdf'); 
 
@@ -123,8 +192,8 @@ exports.createQuote = function(req, res, next) {
 
 }
 
-function generateInvoice(invoice, filename, success, error) {
-    var postData = JSON.stringify(invoice);
+function generateQuote(quote, filename, success, error) {
+    var postData = JSON.stringify(quote);
     var options = {
         hostname  : "invoice-generator.com",
         port      : 443,

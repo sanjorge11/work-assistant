@@ -3,35 +3,54 @@ app.controller("projects-controller", function ($scope, $http) {
     
     var vm = $scope; 
     vm.formClientId = ''; //'(None Selected)';
+    vm.clientSet = {}; 
     vm.clientsArr = []; 
 
-    
-    vm.getAllClients = function() {
+    vm.getAllClients =  function() { 
 
-        $http.get("http://localhost:8080/clients")
-        .then(function(response) {
-            vm.clientsArr = response.data; 
-            //console.log(vm.clientsArr);
-            activate();
-        }); 
+        var url = "http://localhost:8080/clients";
+
+        $http.get(url)
+        .then(function(response) { 
+            vm.clientsArr = response.data
+            activate(); 
+        })
 
     }
 
     function activate() { 
         vm.getAllProjects = function() {
-
-           // vm.getAllClients(); 
     
             $http.get("http://localhost:8080/projects")
             .then(function(response) {
                 vm.projectsArr = response.data;
-                //console.log(vm.projectsArr); 
+    
+                // //reset clientSet to get fresh client data 
+                // vm.clientSet = {};  
+    
+                // for(var i=0; i<vm.projectsArr.count; i++) { 
+                //     var clientId = vm.projectsArr.projects[i].clientId; 
+    
+                //     //if set does not have client info, send an HTTP request
+                //     if(vm.clientSet[clientId] === undefined) {
+                //         $http.get("http://localhost:8080/clients/" + clientId)
+                //         .then(function(response) {
+    
+                //             var client = response.data.client; 
+    
+                //             vm.clientSet[client._id] = client; 
+    
+                //         });
+                //     }
+    
+                // }
+    
             });
     
         }
     
         vm.createProject = function() {
-            
+                
             var url = "http://localhost:8080/projects"; 
             var parameter = JSON.stringify(
                 {
@@ -43,32 +62,20 @@ app.controller("projects-controller", function ($scope, $http) {
     
             $http.post(url, parameter).
             then(function(data) {
-                $('#myModal').modal("hide");    //hide modal and refresh with GET request 
+                $('#myModal').modal("hide");    
                 vm.getAllProjects(); 
               });
     
         }
-
-        vm.getClientInfo = function() { 
-
-            var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
-
-            $http.get(url)
-            .then(function(response) {
-                vm.currentClient = response.data.client; 
-                console.log(vm.currentClient); 
-            }); 
-
-        }
-
+    
         vm.createQuote = function() { 
-
+    
             var url = "http://localhost:8080/quotes"; 
-
+    
             var clientFullName = vm.currentClient.fullName.length > 0 ? vm.currentClient.fullName + "\n" : ""; 
             var clientAddress = vm.currentClient.address.length > 0 ? vm.currentClient.address + "\n" : ""; 
             var clientEmail = vm.currentClient.email.length > 0 ? vm.currentClient.email : ""; 
-
+    
             var quote = {
                 from: "Jorge A Fuentes\n704-400-8160", 
                 to: clientFullName + clientAddress + clientEmail, 
@@ -82,56 +89,71 @@ app.controller("projects-controller", function ($scope, $http) {
                     }
                 ]
             }
-
+    
             var parameter = JSON.stringify(quote);
-
+    
             $http.post(url, parameter).
             then(function(data) {
+                $('#quoteModal').modal("hide");    
                 $('#myModal').modal("hide");    
-                vm.getAllProjects(); 
+                vm.getAllProjects();    //refresh project and client info 
             });
-
-            //console.log(quote); 
-
+    
         }
     
-        vm.mapToClient = function(id) {
-            for(var i=0; i<vm.clientsArr.clients.length; i++) { 
-                if(vm.clientsArr.clients[i]._id === id) {
-                    return vm.clientsArr.clients[i]; 
-                }
-            }
-        }
-
         vm.openModal = function(project) {
             $("#myModal").modal(); 
-            //console.log(project); 
     
-            vm.myForm.projectId = project._id;
-            vm.myForm.clientName = vm.mapToClient(project.clientId).fullName; 
-            vm.myForm.description = project.description; 
-            vm.myForm.clientId = project.clientId; 
+            vm.currentClient = vm.filterClient(project.clientId); 
 
+            vm.myForm.projectId = project._id;
+            vm.myForm.clientId = project.clientId; 
+            vm.myForm.clientName = vm.currentClient.fullName
+            vm.myForm.description = project.description; 
+
+            vm.quoteForm.fullName = vm.currentClient.fullName;
+            vm.quoteForm.address = vm.currentClient.address;
+            vm.quoteForm.email = vm.currentClient.email;
+    
             vm.getClientInfo(); 
             
-            //if edit mode is true, then primary modal has more 
-            //options to edit client information 
             vm.toggleEditMode(true); 
-            //console.log(vm); 
+    
         }
     
         vm.toggleEditMode = function(bool) { 
-           // if(!bool) vm.clearForm();
-    
+            if(!bool) vm.clearForm(); 
             vm.myForm.formEditMode = bool; 
         }
+    
+        vm.clearForm = function() { 
+            vm.myForm.clientId = '';
+            vm.myForm.clientName = '';
+            vm.myForm.description = '';
+        }
+        
+        vm.getClientInfo = function() { 
+    
+            vm.currentClient = vm.clientSet[vm.myForm.clientId]; 
+    
+            // var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
+    
+            // $http.get(url)
+            // .then(function(response) {
+            //     vm.currentClient = response.data.client; 
+            // }); 
+    
+        } 
 
-        // vm.clearForm = function() { 
-        //     vm.myForm.formFirstName = ''; 
-        //     vm.myForm.formLastName = ''; 
-        //     vm.myForm.formAddress = '';
-        //     vm.myForm.formEmail = ''; 
-        // }
+        vm.filterClient = function(clientId) { 
+            for(var i=0; i<vm.clientsArr.clients.length; i++) 
+                if(vm.clientsArr.clients[i]._id === clientId) return vm.clientsArr.clients[i]; 
+        }
+
+    //     function find() {
+    //         console.log( vm.clientsArr.clients.filter( x => x._id === "5d26a19ad81b440ea40d2d32"  ) ); 
+    //     }
+    //    find(); 
     
         vm.getAllProjects(); 
     }

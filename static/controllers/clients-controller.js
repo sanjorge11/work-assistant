@@ -9,6 +9,7 @@ app.controller("clients-controller", function ($scope, $http) {
         $http.get("http://localhost:8080/clients")
         .then(function(response) {
             vm.clientsArr = response.data;
+            vm.activateGrid();
         });
 
     }
@@ -67,7 +68,12 @@ app.controller("clients-controller", function ($scope, $http) {
     }
 
     vm.openModal = function(client) {
-        $("#myModal").modal(); 
+        $("#myModal").modal();
+
+        // if(client === null) { 
+        //     vm.toggleEditMode(false);
+        //     return;
+        // }
 
         vm.myForm.clientId = client._id;
         vm.myForm.formFirstName = client.firstName; 
@@ -81,10 +87,16 @@ app.controller("clients-controller", function ($scope, $http) {
 
     }
 
+    vm.openNewModal = function(client) {
+        $("#newClientModal").modal();
+
+    }
+
     vm.toggleEditMode = function(bool) { 
+        console.log(bool);
         if(!bool) vm.clearForm();
 
-        vm.myForm.formEditMode = bool; 
+        vm.formEditMode = bool; 
     }
 
     vm.clearForm = function() { 
@@ -92,6 +104,37 @@ app.controller("clients-controller", function ($scope, $http) {
         vm.myForm.formLastName = ''; 
         vm.myForm.formAddress = '';
         vm.myForm.formEmail = ''; 
+        console.log(vm.myForm); 
+    }
+
+    vm.activateGrid = function() { 
+
+        $(document).ready(function() {
+            var table = $('#clientGrid').DataTable({
+                lengthChange: false
+                //,"dom": '<"toolbar">frtip'
+            });
+
+            // $("div.toolbar").html('<button ng-click="toggleEditMode(false)" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Create</button>');
+
+         
+            new $.fn.dataTable.Buttons( table, {
+                buttons: [
+                    {
+                        text: 'Create New Client',
+                        action: function ( e, dt, node, conf ) {
+                            vm.openNewModal(null);
+                        }
+                    }
+                ]
+            } );
+         
+            table.buttons( 0, null ).container().prependTo(
+                table.table().container()
+            );
+
+        } );
+
     }
 
     vm.getAllClients(); 

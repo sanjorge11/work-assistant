@@ -2,6 +2,7 @@
 app.controller("clients-controller", function ($scope, $http) {
     
     var vm = $scope; 
+    var gridTable = null; 
 
     
     vm.getAllClients = function() {
@@ -9,7 +10,7 @@ app.controller("clients-controller", function ($scope, $http) {
         $http.get("http://localhost:8080/clients")
         .then(function(response) {
             vm.clientsArr = response.data;
-            vm.activateGrid();
+            if(gridTable === null) vm.activateGrid();
         });
 
     }
@@ -19,118 +20,117 @@ app.controller("clients-controller", function ($scope, $http) {
         var url = "http://localhost:8080/clients"; 
         var parameter = JSON.stringify(
             {
-                firstName: vm.myForm.formFirstName, 
-                lastName: vm.myForm.formLastName, 
-                address: vm.myForm.formAddress, 
-                email: vm.myForm.formEmail
+                firstName: vm.createForm.firstName, 
+                lastName: vm.createForm.lastName, 
+                address: vm.createForm.address, 
+                email: vm.createForm.email
             }
         );
 
         $http.post(url, parameter).
         then(function(data) {
-            $('#myModal').modal("hide");    //hide modal and refresh with GET request 
-            vm.getAllClients(); 
+            $('#newClientModal').modal("hide");    
+                
+            gridTable.row.add( [
+                    vm.createForm.firstName,
+                    vm.createForm.lastName,
+                    vm.createForm.address,
+                    vm.createForm.email
+            ] ).draw(); 
+
+            vm.clearForm();
           });
 
     }
 
     vm.updateClient = function() { 
 
-        var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
+        var url = "http://localhost:8080/clients/" + vm.updateForm.clientId; 
         var parameter = JSON.stringify(
             {
-                firstName: vm.myForm.formFirstName, 
-                lastName: vm.myForm.formLastName, 
-                address: vm.myForm.formAddress, 
-                email: vm.myForm.formEmail
+                firstName: vm.updateForm.firstName, 
+                lastName: vm.updateForm.lastName, 
+                address: vm.updateForm.address, 
+                email: vm.updateForm.email
             }
         );
 
         $http.put(url, parameter).
         then(function(data) {
-            $('#myModal').modal("hide");    
-            vm.getAllClients(); 
+            $('#updateClientModal').modal("hide");
+
+            //update gridTable
+            vm.clientsArr.clients[vm.selectedIndex].firstName = vm.updateForm.firstName; 
+            vm.clientsArr.clients[vm.selectedIndex].lastName = vm.updateForm.lastName; 
+            vm.clientsArr.clients[vm.selectedIndex].address = vm.updateForm.address; 
+            vm.clientsArr.clients[vm.selectedIndex].email = vm.updateForm.email; 
+
         });
 
     }
 
     vm.deleteClient = function() { 
         
-        var url = "http://localhost:8080/clients/" + vm.myForm.clientId; 
-
+       var url = "http://localhost:8080/clients/" + vm.updateForm.clientId; 
+        
         $http.delete(url, null)
         .then(function(data) {
             $('#confirmDelete').modal("hide");    
-            $('#myModal').modal("hide");   
-            vm.getAllClients(); 
+            $('#updateClientModal').modal("hide");   
+            
+            gridTable.row( $('#'+vm.selectedIndex) )
+            .remove()
+            .draw();
         }); 
         
     }
 
-    vm.openModal = function(client) {
-        $("#myModal").modal();
+    vm.updateClientModal = function(client, index) {
+        $("#updateClientModal").modal();
 
-        // if(client === null) { 
-        //     vm.toggleEditMode(false);
-        //     return;
-        // }
+        vm.selectedIndex = index; 
 
-        vm.myForm.clientId = client._id;
-        vm.myForm.formFirstName = client.firstName; 
-        vm.myForm.formLastName = client.lastName; 
-        vm.myForm.formAddress = client.address;
-        vm.myForm.formEmail = client.email; 
+        vm.updateForm.clientId = client._id;
+        vm.updateForm.firstName = client.firstName; 
+        vm.updateForm.lastName = client.lastName; 
+        vm.updateForm.address = client.address;
+        vm.updateForm.email = client.email; 
         
-        //if edit mode is true, then primary modal has more 
-        //options to edit client information 
-        vm.toggleEditMode(true); 
-
     }
 
-    vm.openNewModal = function(client) {
+    vm.createClientModal = function() {
         $("#newClientModal").modal();
-
-    }
-
-    vm.toggleEditMode = function(bool) { 
-        console.log(bool);
-        if(!bool) vm.clearForm();
-
-        vm.formEditMode = bool; 
     }
 
     vm.clearForm = function() { 
-        vm.myForm.formFirstName = ''; 
-        vm.myForm.formLastName = ''; 
-        vm.myForm.formAddress = '';
-        vm.myForm.formEmail = ''; 
-        console.log(vm.myForm); 
+        vm.createForm.firstName = '';  
+        vm.createForm.lastName = ''; 
+        vm.createForm.address = ''; 
+        vm.createForm.email = '';
     }
 
     vm.activateGrid = function() { 
 
         $(document).ready(function() {
-            var table = $('#clientGrid').DataTable({
-                lengthChange: false
-                //,"dom": '<"toolbar">frtip'
+            gridTable = $('#clientGrid').DataTable({
+                lengthChange: false,
+                retrieve: true
             });
 
-            // $("div.toolbar").html('<button ng-click="toggleEditMode(false)" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Create</button>');
-
-         
-            new $.fn.dataTable.Buttons( table, {
+            new $.fn.dataTable.Buttons( gridTable, {
                 buttons: [
                     {
                         text: 'Create New Client',
                         action: function ( e, dt, node, conf ) {
-                            vm.openNewModal(null);
+                            e.preventDefault();
+                            vm.createClientModal(null);
                         }
                     }
                 ]
             } );
          
-            table.buttons( 0, null ).container().prependTo(
-                table.table().container()
+            gridTable.buttons( 0, null ).container().prependTo(
+                gridTable.table().container()
             );
 
         } );

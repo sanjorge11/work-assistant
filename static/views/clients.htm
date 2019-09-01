@@ -10,12 +10,12 @@
         <h2>Create new client</h2> 
     </div>
     <div class="col-sm-1" style="margin-top: 20px; margin-bottom: 10px;">
-        <button ng-click="toggleEditMode(false)" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Create</button>
+        <button ng-click="openModal(null)">Create</button>
     </div>
 </div> -->
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="updateClientModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
       
         <!-- Modal content-->
@@ -26,21 +26,20 @@
                 <h4 class="modal-title"> Update Client </h4>
             </div>
             <div class="modal-body">
-                <form name="myForm">
+                <form name="updateForm">
                     First Name:<br>
-                    <input type="text" ng-model="myForm.formFirstName"><br>
+                    <input type="text" ng-model="updateForm.firstName"><br>
                     Last Name:<br>
-                    <input type="text" ng-model="myForm.formLastName"><br>
+                    <input type="text" ng-model="updateForm.lastName"><br>
                     Address:<br>
-                    <input type="text" ng-model="myForm.formAddress"><br>
+                    <input type="text" ng-model="updateForm.address"><br>
                     Email:<br>
-                    <input type="text" ng-model="myForm.formEmail"><br>
+                    <input type="text" ng-model="updateForm.email"><br>
                 </form>
             </div>
             <div class="modal-footer">
-                <button ng-if="myForm.formEditMode" type="button" class="pull-left btn btn-default btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete</button>
-                <button ng-if="!myForm.formEditMode" type="button" class="btn btn-default" ng-click="createClient()">Save</button>
-                <button ng-if="myForm.formEditMode" type="button" class="btn btn-default" ng-click="updateClient()">Update</button>
+                <button type="button" class="pull-left btn btn-default btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete</button>
+                <button type="button" class="btn btn-default" ng-click="updateClient()">Update</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -59,21 +58,19 @@
                 <h4 class="modal-title"> New Client </h4>
             </div>
             <div class="modal-body">
-                <form name="myForm">
+                <form name="createForm">
                     First Name:<br>
-                    <input type="text" ng-model="myForm.formFirstName"><br>
+                    <input type="text" ng-model="createForm.firstName"><br>
                     Last Name:<br>
-                    <input type="text" ng-model="myForm.formLastName"><br>
+                    <input type="text" ng-model="createForm.lastName"><br>
                     Address:<br>
-                    <input type="text" ng-model="myForm.formAddress"><br>
+                    <input type="text" ng-model="createForm.address"><br>
                     Email:<br>
-                    <input type="text" ng-model="myForm.formEmail"><br>
+                    <input type="text" ng-model="createForm.email"><br>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button ng-if="myForm.formEditMode" type="button" class="pull-left btn btn-default btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete</button>
-                <button ng-if="!myForm.formEditMode" type="button" class="btn btn-default" ng-click="createClient()">Save</button>
-                <button ng-if="myForm.formEditMode" type="button" class="btn btn-default" ng-click="updateClient()">Update</button>
+            <div class="modal-footer">              
+                <button type="button" class="btn btn-default" ng-click="createClient()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -120,7 +117,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-dblclick="openModal(client)" ng-repeat="client in clientsArr.clients">
+        <tr id="{{$index}}" ng-dblclick="updateClientModal(client, $index)" ng-repeat="client in clientsArr.clients">
             <td>{{ client.firstName }}</td>
             <td>{{ client.lastName }}</td>
             <td>{{ client.address }}</td>

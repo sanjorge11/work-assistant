@@ -85,6 +85,10 @@ app.controller("clients-controller", function ($scope, $http) {
         
     }
 
+    vm.createClientModal = function() {
+        $("#newClientModal").modal();
+    }
+
     vm.updateClientModal = function(client, index) {
         $("#updateClientModal").modal();
 
@@ -98,10 +102,6 @@ app.controller("clients-controller", function ($scope, $http) {
         
     }
 
-    vm.createClientModal = function() {
-        $("#newClientModal").modal();
-    }
-
     vm.clearForm = function() { 
         vm.createForm.firstName = '';  
         vm.createForm.lastName = ''; 
@@ -113,8 +113,7 @@ app.controller("clients-controller", function ($scope, $http) {
 
         $(document).ready(function() {
             gridTable = $('#clientGrid').DataTable({
-                lengthChange: false,
-                retrieve: true
+                lengthChange: false
             });
 
             new $.fn.dataTable.Buttons( gridTable, {
@@ -123,7 +122,7 @@ app.controller("clients-controller", function ($scope, $http) {
                         text: 'Create New Client',
                         action: function ( e, dt, node, conf ) {
                             e.preventDefault();
-                            vm.createClientModal(null);
+                            vm.createClientModal();
                         }
                     }
                 ]
@@ -132,6 +131,8 @@ app.controller("clients-controller", function ($scope, $http) {
             gridTable.buttons( 0, null ).container().prependTo(
                 gridTable.table().container()
             );
+
+            $('#clientGrid').show();
 
         } );
 

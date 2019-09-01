@@ -1,5 +1,9 @@
     
-    <h3>Quotes</h3>  
+    <div class="row">
+            <div class="col-sm-12 text-center"> 
+                <h1>Quotes</h1>  
+            </div>
+    </div>
 
     <!-- Quote Modal -->
     <div id="quoteModal" class="modal fade" role="dialog">
@@ -9,7 +13,8 @@
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{{clientFullName + 
+                    <h4 class="modal-title">
+                        {{clientFullName + 
                         (clientFullName[clientFullName.length-1] === 's' || 
                         clientFullName[clientFullName.length-1] === 'S' ? "' " : "'s ") + "Quote"}}
                     </h4>
@@ -28,7 +33,7 @@
         </div>
     </div>
     
-    <table class="table table-hover">
+    <table class="table table-hover display" id="quoteGrid" style="width:100%; display:none;">
         <thead>
         <tr>
             <th>Client Name</th>
@@ -36,7 +41,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-dblclick="openModal(quote)" ng-repeat="quote in quotesArr.projects">
+        <tr ng-dblclick="quoteModal(quote)" ng-repeat="quote in quotesArr.projects">
             <td>{{ quote.to.split("\n")[0] }}</td>
             <td>{{ quote.projectTotal }}</td>
         </tr>

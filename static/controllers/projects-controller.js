@@ -4,7 +4,7 @@ app.controller("projects-controller", function ($scope, $http) {
     var vm = $scope; 
     vm.clientsArr = []; 
     var gridTable = null; 
-    
+
 
     vm.getAllClients =  function() { 
 

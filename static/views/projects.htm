@@ -50,7 +50,7 @@
                 <div class="modal-body">
                     <form name="updateForm">
                         Client ID: &nbsp; 
-                        <span> {{updateForm.clientName}} </span>
+                        <span> {{updateForm.clientId}} </span>
                         <br> <br>
                         Description: &nbsp; 
                         <span> {{updateForm.description}} </span>
@@ -81,13 +81,13 @@
                 <div class="modal-body text-center">
                     <form name="quoteForm">
                         <div>
-                            Client Full Name: {{quoteForm.fullName}}
+                            Client Full Name: {{currentClient.fullName}}
                         </div>
                         <div>
-                            Client Address: {{quoteForm.address}}
+                            Client Address: {{currentClient.address}}
                         </div>
                         <div>
-                            Client Email: {{quoteForm.email}}
+                            Client Email: {{currentClient.email}}
                         </div>
                         <div>
                             Description: &nbsp; 

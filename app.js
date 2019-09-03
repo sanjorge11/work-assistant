@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var clientRoutes = require('./api/routes/clients');
 var projectRoutes = require('./api/routes/projects'); 
 var quoteRoutes = require('./api/routes/quotes'); 
+var resourceRoutes = require('./api/routes/resources'); 
 
 //                                          password                     url parameter points to 'root' database in mongoDB
 mongoose.connect('mongodb+srv://admin:' + '381025JFdf' + '@rest-api-db-xldnz.mongodb.net/'+ 'root' + '?retryWrites=true&w=majority',
@@ -42,6 +43,7 @@ app.use(express.static(__dirname + '/static'));     //don't need route to static
 app.use('/clients', clientRoutes); 
 app.use('/projects', projectRoutes); 
 app.use('/quotes', quoteRoutes);
+app.use('/resources', resourceRoutes);
 
 //Error-Handling
 app.use(function(req, res, next) {  //404 if no match to routes defined 

@@ -11,7 +11,7 @@ exports.getAllQuotes = function(req, res, next) {
     .then(function(docs) { 
         var response = {
             count: docs.length, 
-            projects: docs.map(function(doc) {
+            quotes: docs.map(function(doc) {
                 return { 
                     _id: doc._id,
                     projectTotal: doc.projectTotal, 

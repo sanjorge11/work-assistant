@@ -3,6 +3,7 @@ app.controller("clients-controller", function ($scope, $http) {
     
     var vm = $scope; 
     var gridTable = null; 
+    vm.resources = [];
 
     
     vm.getAllClients = function() {
@@ -16,13 +17,19 @@ app.controller("clients-controller", function ($scope, $http) {
     }
 
     vm.createClient = function() {
+
+        var addressStr = 
+        vm.createForm.address + "\n" + 
+        vm.createForm.city + ", " + vm.createForm.state + " " + vm.createForm.zip; 
+        //vm.createForm.address.length > 0 ? vm.createForm.address + "\n" : vm.createForm.address;
         
         var url = "http://localhost:8080/clients"; 
         var parameter = JSON.stringify(
             {
                 firstName: vm.createForm.firstName, 
                 lastName: vm.createForm.lastName, 
-                address: vm.createForm.address, 
+                address: addressStr, 
+                phoneNumber: vm.createForm.phoneNumber, 
                 email: vm.createForm.email
             }
         );
@@ -38,6 +45,9 @@ app.controller("clients-controller", function ($scope, $http) {
                     vm.createForm.email
             ] ).draw(); 
 
+            //only clear form if save was successful, 
+            //don't erase typed info if user exits modal 
+            //to check other browser windows
             vm.clearForm();
           });
 
@@ -85,6 +95,19 @@ app.controller("clients-controller", function ($scope, $http) {
         
     }
 
+    vm.getResources = function() { 
+
+        var url = "http://localhost:8080/resources"; 
+
+        $http.get(url)
+        .then(function(result) { 
+
+            for(i in result.data.resources) vm.resources[result.data.resources[i].resourceName] = result.data.resources[i];
+       
+        });
+
+    }
+
     vm.createClientModal = function() {
         $("#newClientModal").modal();
     }
@@ -106,6 +129,10 @@ app.controller("clients-controller", function ($scope, $http) {
         vm.createForm.firstName = '';  
         vm.createForm.lastName = ''; 
         vm.createForm.address = ''; 
+        vm.createForm.city = ''; 
+        vm.createForm.state = 'Choose...'; 
+        vm.createForm.zip = '';
+        vm.createForm.phoneNumber = '';
         vm.createForm.email = '';
     }
 
@@ -132,12 +159,23 @@ app.controller("clients-controller", function ($scope, $http) {
                 gridTable.table().container()
             );
 
+            // $('#inputPhone').keyup(function(e) {
+            //     var key = $(this).val(); 
+
+            //     if(key.length > 0) { 
+            //         vm.createForm.phoneNumber = "(" + key.slice(0,3) + ")" + key.slice(3);
+            //     }
+                
+            //     console.log(vm.createForm.phoneNumber); 
+            // });
+
             $('#clientGrid').show();
 
         } );
 
     }
 
+    vm.getResources();
     vm.getAllClients(); 
 
 });

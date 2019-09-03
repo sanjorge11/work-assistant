@@ -7,7 +7,7 @@
 
 <!-- Create Client Modal -->
 <div id="newClientModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-md">
           
             <!-- Modal content-->
             <div class="modal-content">
@@ -19,42 +19,54 @@
 
                 <!-- added row class to keep modal footer at bottom -->
                 <div class="modal-body row">
+                    <form name="createForm">
                         <div class="form-row">
                             <div class="form-group col-sm-6">
                                 <label for="firstNameInput">First Name</label>
-                                <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
+                                <input type="text" ng-model="createForm.firstName" class="form-control" id="firstNameInput" placeholder="John">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="lastNameInput">Last Name</label>
-                                <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
+                                <input type="text" ng-model="createForm.lastName" class="form-control" id="lastNameInput" placeholder="Doe">
                             </div>
                         </div>
 
                         <div class="form-group col-sm-12">
                             <label for="inputAddress">Address</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                            <input type="text" ng-model="createForm.address" class="form-control" id="inputAddress" placeholder="1234 Main St">
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-sm-6">
                                 <label for="inputCity">City</label>
-                                <input type="text" class="form-control" id="inputCity">
+                                <input type="text" ng-model="createForm.city" class="form-control" id="inputCity" placeholder="Charlotte">
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="inputState">State</label>
-                                <select id="inputState" class="form-control">
+                                <select id="inputState" class="form-control" ng-model="createForm.state" ng-init="createForm.state = 'Choose...'" >
                                     <option selected>Choose...</option>
-                                    <option>...</option>
+                                    <option ng-repeat="state in resources.US_States.data" value="{{ state.abbreviation }}">{{state.name}}</option>
                                 </select>
                             </div>
 
                             <div class="form-group col-sm-2">
                                 <label for="inputZip">Zip</label>
-                                <input type="text" class="form-control" id="inputZip">
+                                <input type="text" ng-model="createForm.zip" class="form-control" id="inputZip" placeholder="12345">
                             </div>
                         </div>
-                  
+
+                        <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                        <label for="inputPhone">Phone Number</label>
+                                        <input type="tel" ng-model="createForm.phoneNumber" class="form-control" id="inputPhone" placeholder="(777) 888-9999" maxlength="10">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                        <label for="inputEmail">Email</label>
+                                        <input type="email" ng-model="createForm.email" class="form-control" id="inputEmail" placeholder="john.doe@email.com">
+                                </div>
+                        </div>
+                    </form>
                     <!-- <form name="createForm">
                         First Name:<br>
                         <input type="text" ng-model="createForm.firstName"><br>
@@ -67,7 +79,7 @@
                     </form> -->
                 </div>
                 <div class="modal-footer">              
-                    <button type="button" class="btn btn-default" ng-click="createClient()">Save</button>
+                    <button type="button" class="btn btn-default btn-primary" ng-click="createClient()">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

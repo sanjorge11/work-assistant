@@ -7,6 +7,10 @@ var clientSchema = mongoose.Schema({
     lastName: { type: String, required: false },  
     fullName: { type: String, required: false },  //will be just a concatenation of first and last name 
     address: { type: String, required: true }, 
+    city: { type: String, required: true  }, 
+    state: { type: String, required: true  }, 
+    zip: { type: String, required: true  },
+    fullAddress: { type: String, required: true }, 
     phoneNumber: { type: String, required: false }, 
     email: {
         type: String, 

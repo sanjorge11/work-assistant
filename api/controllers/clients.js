@@ -16,7 +16,11 @@ exports.getAllClients = function(req, res, next) {
                     firstName: doc.firstName, 
                     lastName: doc.lastName,  
                     fullName: doc.fullName,  
-                    address: doc.address, 
+                    address: doc.address,
+                    city: doc.city,
+                    state: doc.state,
+                    zip: doc.zip,
+                    fullAddress: doc.fullAddress,
                     phoneNumber: doc.phoneNumber, 
                     email: doc.email
                 }
@@ -62,8 +66,12 @@ exports.createClient = function(req, res, next) {
         _id: new mongoose.Types.ObjectId(), 
         firstName: req.body.firstName, 
         lastName: req.body.lastName, 
-        fullName: (req.body.firstName + ' ' + req.body.lastName).trim(),
+        fullName: (req.body.firstName + ' ' + req.body.lastName),
         address: req.body.address, 
+        city: req.body.city,
+        state: req.body.state,
+        zip: req.body.zip,
+        fullAddress: (req.body.address + '\n' + req.body.city + ', ' + req.body.state + ' ' + req.body.zip),
         phoneNumber: req.body.phoneNumber, 
         email: req.body.email
     });
@@ -78,7 +86,11 @@ exports.createClient = function(req, res, next) {
                 firstName: result.firstName, 
                 lastName: result.lastName, 
                 fullName: result.fullName,
-                address: result.address, 
+                address: result.address,
+                city: result.city,
+                state: result.state,
+                zip: result.zip,
+                fullAddress: result.fullAddress,
                 phoneNumber: result.phoneNumber, 
                 email: result.email
             }

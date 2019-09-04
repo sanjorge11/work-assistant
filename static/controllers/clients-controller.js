@@ -18,30 +18,28 @@ app.controller("clients-controller", function ($scope, $http) {
 
     vm.createClient = function() {
 
-        var addressStr = 
-        vm.createForm.address + "\n" + 
-        vm.createForm.city + ", " + vm.createForm.state + " " + vm.createForm.zip; 
-        //vm.createForm.address.length > 0 ? vm.createForm.address + "\n" : vm.createForm.address;
-        
         var url = "http://localhost:8080/clients"; 
         var parameter = JSON.stringify(
             {
                 firstName: vm.createForm.firstName, 
                 lastName: vm.createForm.lastName, 
-                address: addressStr, 
+                address: vm.createForm.address, 
+                city: vm.createForm.city, 
+                state: vm.createForm.state, 
+                zip: vm.createForm.zip, 
                 phoneNumber: vm.createForm.phoneNumber, 
                 email: vm.createForm.email
             }
         );
 
         $http.post(url, parameter).
-        then(function(data) {
+        then(function(response) {
             $('#newClientModal').modal("hide");    
-                
+
             gridTable.row.add( [
                     vm.createForm.firstName,
                     vm.createForm.lastName,
-                    vm.createForm.address,
+                    response.data.client.fullAddress,
                     vm.createForm.email
             ] ).draw(); 
 
@@ -121,6 +119,10 @@ app.controller("clients-controller", function ($scope, $http) {
         vm.updateForm.firstName = client.firstName; 
         vm.updateForm.lastName = client.lastName; 
         vm.updateForm.address = client.address;
+        vm.updateForm.city = client.city;
+        vm.updateForm.state = client.state;
+        vm.updateForm.zip = client.zip;
+        vm.updateForm.phoneNumber = client.phoneNumber;
         vm.updateForm.email = client.email; 
         
     }

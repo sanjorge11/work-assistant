@@ -16,19 +16,25 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">New Project</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body row">
                     <form name="createForm">
-                        Client ID: &nbsp; 
-                        <select ng-model="createForm.clientId">
-                            <option ng-repeat="x in clientsArr.clients" value="{{ x._id }}"> {{ x.fullName }} </option>
-                        </select>
-                        <br> <br>
-                        Description: &nbsp; 
-                        <input type="text" ng-model="createForm.description">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                    <label for="inputClientId">Client</label>
+                                    <select id="inputClientId" class="form-control" ng-model="createForm.clientId" ng-init="createForm.clientId = 'Choose...'">
+                                            <option selected>Choose...</option>
+                                            <option ng-repeat="client in clientsArr.clients" value="{{ client._id }}">{{client.fullName + ' — ' + client.fullAddress}}</option>
+                                    </select>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                    <label for="inputDescription">Brief Description</label>
+                                    <textarea class="form-control" rows="7" id="inputDescription" ng-model="createForm.description" style="resize: none;"></textarea>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="createProject()">Save</button>
+                    <button type="button" class="btn btn-default btn-primary" ng-click="createProject()">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -47,17 +53,28 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Update Project</h4>
                 </div>
-                <div class="modal-body">
-                    <form name="updateForm">
-                        Client ID: &nbsp; 
-                        <span> {{updateForm.clientId}} </span>
-                        <br> <br>
-                        Description: &nbsp; 
-                        <span> {{updateForm.description}} </span>
-                        <br> <br>
-                        Create Quote: &nbsp; 
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create</button>
-                    </form>
+                <div class="modal-body row">
+                        <form name="updateForm">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-12">
+                                            <label for="inputClientId">Client</label>
+                                            <select id="inputClientId" class="form-control" ng-model="updateForm.clientId" ng-init="updateForm.clientId = 'Choose...'" ng-disabled="true">
+                                                    <option selected>Choose...</option>
+                                                    <option ng-repeat="client in clientsArr.clients" value="{{ client._id }}">{{client.fullName + ' — ' + client.fullAddress}}</option>
+                                            </select>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                            <label for="inputDescription">Brief Description</label>
+                                            <textarea class="form-control" rows="7" id="inputDescription" ng-model="updateForm.description" style="resize: none;"></textarea>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                            <label for="inputDescription">Create Quote</label>
+                                            <div>
+                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create</button>  
+                                            </div>                                 
+                                     </div>
+                                </div>
+                        </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="createProject()">Save</button>
@@ -74,12 +91,117 @@
           
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header text-center">
+                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Create Quote</h4>
                 </div>
-                <div class="modal-body text-center">
+                <div class="modal-body row">
                     <form name="quoteForm">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12" style="background-image: linear-gradient(to right, black , white);">
+                                <h4 style="color: white;"> Client Information </h4>
+                            </div>
+                            <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="firstNameInput">First Name</label>
+                                        <input type="text" ng-model="currentClient.firstName" class="form-control" id="firstNameInput">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="lastNameInput">Last Name</label>
+                                        <input type="text" ng-model="currentClient.lastName" class="form-control" id="lastNameInput">
+                                    </div>
+                            </div>
+        
+                            <div class="form-group col-sm-12">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" ng-model="currentClient.address" class="form-control" id="inputAddress">
+                            </div>
+        
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="inputCity">City</label>
+                                    <input type="text" ng-model="currentClient.city" class="form-control" id="inputCity">
+                                </div>
+    
+                                <div class="form-group col-sm-4">
+                                    <label for="inputState">State</label>
+                                    <select id="inputState" class="form-control" ng-model="currentClient.state" ng-init="currentClient.state = 'Choose...'" >
+                                        <option selected>Choose...</option>
+                                        <option ng-repeat="state in resources.US_States.data" value="{{ state.abbreviation }}">{{state.name}}</option>
+                                    </select>
+                                </div>
+    
+                                <div class="form-group col-sm-2">
+                                    <label for="inputZip">Zip</label>
+                                    <input type="text" ng-model="currentClient.zip" class="form-control" id="inputZip">
+                                </div>
+                            </div>
+        
+                            <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                            <label for="inputPhone">Phone Number</label>
+                                            <input type="tel" ng-model="currentClient.phoneNumber" class="form-control" id="inputPhone" maxlength="10">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                            <label for="inputEmail">Email</label>
+                                            <input type="email" ng-model="currentClient.email" class="form-control" id="inputEmail">
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">&nbsp;</div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-12" style="background-image: linear-gradient(to right, black , white);">
+                                <h4 style="color: white;"> Items </h4>
+                            </div>
+                        </div>
+                        <div class="form-row" ng-repeat="quoteItem in quoteItemsArr">
+                            <div class="form-group col-sm-7">
+                                    <label for="inputNote">Description</label>
+                                    <input type="text" ng-model="quoteItem.description" class="form-control" id="inputCity">                                
+                            </div>
+                            <div class="form-group col-sm-1">
+                                    <label for="inputNote">Quantity</label>
+                                    <input type="text" ng-model="quoteItem.quantity" class="form-control" id="inputCity">
+                            </div>
+                            <div class="form-group col-sm-2">
+                                    <label for="inputNote">Rate</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">$</span>
+                                        <input type="text" class="form-control" ng-model="quoteItem.rate"/>
+                                    </div>
+                                    <!-- <input type="text" ng-model="" class="form-control" id="inputCity"> -->
+                            </div>
+                            <div class="form-group col-sm-2">
+                                    <label for="inputNote">Amount</label>
+                                    <textarea class="form-control" rows="1" id="inputNotes" style="resize: none;">{{quoteItem.quantity * quoteItem.rate | currency}}</textarea>
+                                    <!-- <input type="text" class="form-control" id="inputCity"> -->
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <button type="button" class="btn btn-default btn-primary" ng-click="addItem()">&#43; Add Item</button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">&nbsp;</div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-12" style="background-image: linear-gradient(to right, black , white);">
+                                <h4 style="color: white;"> Additional Information </h4>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                    <label for="inputNotes">Notes</label>
+                                    <textarea class="form-control" rows="4" id="inputNotes" ng-model="quoteForm.notes" style="resize: none;"></textarea>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                    <label for="inputTerms">Terms</label>
+                                    <textarea class="form-control" rows="4" id="inputTerms" ng-model="quoteForm.terms" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- <form name="quoteForm">
                         <div>
                             Client Full Name: {{currentClient.fullName}}
                         </div>
@@ -99,13 +221,11 @@
                             Notes: &nbsp; 
                             <input type="text" ng-model="quoteForm.notes">
                         </div>
-                    </form>
+                    </form> -->
                 </div>
                 <div class="modal-footer">
-                    <div class="text-center">
-                        <button type="button" class="btn btn-default" ng-click="createQuote()">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    </div>  
+                    <button type="button" class="btn btn-default" ng-click="createQuote()">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
           
@@ -121,14 +241,16 @@
 <table class="table table-hover display" id="projectGrid" style="width:100%; display:none;">
     <thead>
         <tr>
-            <th>Project ID</th>
             <th>Client Name</th>
+            <th>Address</th>
+            <th>Brief Description</th>
         </tr>
     </thead>
     <tbody>
         <tr id="{{$index}}" ng-dblclick="updateProjectModal(project, $index)" ng-repeat="project in projectsArr.projects">
-            <td>{{ project._id }}</td>
             <td>{{ getClientInfo(project.clientId).fullName }}</td>
+            <td>{{ getClientInfo(project.clientId).fullAddress }}</td>
+            <td>{{ project.description }}</td>
         </tr>
     </tbody>
 </table> 

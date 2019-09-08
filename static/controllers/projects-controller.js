@@ -4,6 +4,14 @@ app.controller("projects-controller", function ($scope, $http) {
     var vm = $scope; 
     vm.clientsArr = []; 
     var gridTable = null; 
+    vm.resources = [];
+    vm.quoteItemsArr = [
+        {
+            description: '',
+            quantity: 1,
+            rate: 0
+        }
+    ];
 
 
     vm.getAllClients =  function() { 
@@ -16,6 +24,14 @@ app.controller("projects-controller", function ($scope, $http) {
             activate(); 
         })
 
+    }
+
+    vm.addItem = function() { 
+        vm.quoteItemsArr.push({
+            name: '',
+            quantity: 1,
+            rate: 0
+        });
     }
 
     vm.activateGrid = function() { 
@@ -76,6 +92,7 @@ app.controller("projects-controller", function ($scope, $http) {
                 
                 gridTable.row.add( [
                     vm.createForm.clientId,
+                    vm.getClientInfo(vm.createForm.clientId).fullName,
                     vm.getClientInfo(vm.createForm.clientId).fullName
                 ] ).draw(); 
 
@@ -115,6 +132,19 @@ app.controller("projects-controller", function ($scope, $http) {
             });
     
         }
+
+        vm.getResources = function() { 
+
+            var url = "http://localhost:8080/resources"; 
+    
+            $http.get(url)
+            .then(function(result) { 
+    
+                for(i in result.data.resources) vm.resources[result.data.resources[i].resourceName] = result.data.resources[i];
+           
+            });
+    
+        }
     
         vm.createProjectModal = function() {
             $("#newProjectModal").modal();   
@@ -145,6 +175,7 @@ app.controller("projects-controller", function ($scope, $http) {
                 if(vm.clientsArr.clients[i]._id === clientId) return vm.clientsArr.clients[i]; 
         }
     
+        vm.getResources();
         vm.getAllProjects(); 
     }
 

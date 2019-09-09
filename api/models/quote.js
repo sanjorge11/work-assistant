@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var quoteSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     projectTotal: { type: Number, required: true }, 
+    invoice_number_title: { type: String, default: "ID:" },
     header: { type: String, default: "ESTIMATE" }, //document title 
     to_title: { type: String, default: "Client" }, //client header
     logo: { type: String, required: false },

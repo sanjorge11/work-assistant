@@ -7,9 +7,9 @@ app.controller("projects-controller", function ($scope, $http) {
     vm.resources = [];
     vm.quoteItemsArr = [
         {
-            description: '',
+            name: '',
             quantity: 1,
-            rate: 0
+            unit_cost: 0
         }
     ];
 
@@ -30,8 +30,31 @@ app.controller("projects-controller", function ($scope, $http) {
         vm.quoteItemsArr.push({
             name: '',
             quantity: 1,
-            rate: 0
+            unit_cost: 0
         });
+    }
+
+    vm.removeItem = function(e) { 
+        var rowIndex = e.$parent.$index;
+
+        var firstHalf = vm.quoteItemsArr.slice(0, rowIndex);
+        var secondHalf = vm.quoteItemsArr.slice(rowIndex+1);
+
+        vm.quoteItemsArr = []; 
+        for(var item in firstHalf) {
+            vm.quoteItemsArr.push(firstHalf[item]);
+        }
+        for(var item in secondHalf) {
+            vm.quoteItemsArr.push(secondHalf[item]);
+        }
+    }
+
+    vm.getTotal = function() { 
+        var sum = 0; 
+        for(var i=0; i<vm.quoteItemsArr.length; i++) { 
+            sum += (vm.quoteItemsArr[i].quantity * vm.quoteItemsArr[i].unit_cost); 
+        }
+        return sum; 
     }
 
     vm.activateGrid = function() { 
@@ -104,26 +127,24 @@ app.controller("projects-controller", function ($scope, $http) {
         vm.createQuote = function() { 
     
             var url = "http://localhost:8080/quotes"; 
-    
-            var clientFullName = vm.currentClient.fullName.length > 0 ? vm.currentClient.fullName + "\n" : ""; 
-            var clientAddress = vm.currentClient.address.length > 0 ? vm.currentClient.address + "\n" : ""; 
-            var clientEmail = vm.currentClient.email.length > 0 ? vm.currentClient.email : ""; 
+
+            var clientInfo = 
+            vm.currentClient.fullName + "\n" +
+            vm.currentClient.fullAddress + "\n" +
+            vm.currentClient.phoneNumber.length > 0 ? (vm.currentClient.phoneNumber + "\n") : "" + 
+            vm.currentClient.email;
     
             var quote = {
                 from: "Jorge A Fuentes\n704-400-8160", 
-                to: clientFullName + clientAddress + clientEmail, 
-                number: "#1", 
-                projectTotal: vm.quoteForm.cost, 
-                items: [
-                    {
-                        name: vm.quoteForm.description,
-                        quantity: 1,
-                        unit_cost: vm.quoteForm.cost, 
-                    }
-                ]
+                to: clientInfo, 
+                projectTotal: vm.getTotal(), 
+                items: vm.quoteItemsArr,
+                notes: vm.quoteForm.notes,
+                terms: vm.quoteForm.terms
             }
     
-            var parameter = JSON.stringify(quote);
+            //remove $$hashkey and other properties added by angular
+            var parameter = angular.toJson(quote);
     
             $http.post(url, parameter).
             then(function(data) {

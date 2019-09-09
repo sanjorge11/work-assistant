@@ -43,7 +43,7 @@
     <tbody>
     <tr ng-dblclick="quoteModal(quote)" ng-repeat="quote in quotesArr.quotes">
         <td>{{ quote.to.split("\n")[0] }}</td>
-        <td>{{ quote.projectTotal }}</td>
+        <td>{{ quote.projectTotal | currency }}</td>
     </tr>
     </tbody>
 </table> 

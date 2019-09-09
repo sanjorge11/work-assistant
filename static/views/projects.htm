@@ -157,9 +157,9 @@
                             </div>
                         </div>
                         <div class="form-row" ng-repeat="quoteItem in quoteItemsArr">
-                            <div class="form-group col-sm-7">
+                            <div class="form-group col-sm-6">
                                     <label for="inputNote">Description</label>
-                                    <input type="text" ng-model="quoteItem.description" class="form-control" id="inputCity">                                
+                                    <input type="text" ng-model="quoteItem.name" class="form-control" id="inputCity">                                
                             </div>
                             <div class="form-group col-sm-1">
                                     <label for="inputNote">Quantity</label>
@@ -169,20 +169,24 @@
                                     <label for="inputNote">Rate</label>
                                     <div class="input-group">
                                         <span class="input-group-addon">$</span>
-                                        <input type="text" class="form-control" ng-model="quoteItem.rate"/>
+                                        <input type="text" class="form-control" ng-model="quoteItem.unit_cost">
                                     </div>
                                     <!-- <input type="text" ng-model="" class="form-control" id="inputCity"> -->
                             </div>
                             <div class="form-group col-sm-2">
                                     <label for="inputNote">Amount</label>
-                                    <textarea class="form-control" rows="1" id="inputNotes" style="resize: none;">{{quoteItem.quantity * quoteItem.rate | currency}}</textarea>
+                                    <textarea class="form-control" rows="1" id="inputNotes" style="resize: none;">{{quoteItem.quantity * quoteItem.unit_cost | currency}}</textarea>
                                     <!-- <input type="text" class="form-control" id="inputCity"> -->
+                            </div>
+                            <div ng-if="quoteItemsArr.length > 1" class="form-group col-sm-1 text-center row" style="padding-top:30px;">
+                                <button type="button" class="close" ng-click="removeItem(this)">&times;</button>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-sm-2">
                                 <button type="button" class="btn btn-default btn-primary" ng-click="addItem()">&#43; Add Item</button>
                             </div>
+                            <h4 class="form-group col-sm-2 pull-right">Total: {{getTotal() | currency}}</h4>
                         </div>
 
                         <div class="col-sm-12">&nbsp;</div>
@@ -201,27 +205,6 @@
                             </div>
                         </div>
                     </form>
-                    <!-- <form name="quoteForm">
-                        <div>
-                            Client Full Name: {{currentClient.fullName}}
-                        </div>
-                        <div>
-                            Client Address: {{currentClient.address}}
-                        </div>
-                        <div>
-                            Client Email: {{currentClient.email}}
-                        </div>
-                        <div>
-                            Description: &nbsp; 
-                            <input type="text" ng-model="quoteForm.description"> &nbsp; &nbsp;
-                            Cost: &nbsp;
-                            <input type="text" ng-model="quoteForm.cost">
-                        </div>
-                        <div>
-                            Notes: &nbsp; 
-                            <input type="text" ng-model="quoteForm.notes">
-                        </div>
-                    </form> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="createQuote()">Save</button>

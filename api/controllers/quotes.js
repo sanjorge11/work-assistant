@@ -115,8 +115,10 @@ exports.getQuotePDF = function(req, res, next) {
 
 exports.createQuote = function(req, res, next) {
 
+    var quoteId = new mongoose.Types.ObjectId(); 
+
     var quote = new Quote({
-        _id: new mongoose.Types.ObjectId(),
+        _id: quoteId,
         projectTotal: req.body.projectTotal, 
         header: req.body.header, 
         to_title: req.body.to_title, 
@@ -125,7 +127,7 @@ exports.createQuote = function(req, res, next) {
         to: req.body.to,
         date: req.body.date,
         currency: req.body.currency,
-        number: req.body.number,   
+        number: quoteId,   
         payment_terms: req.body.payment_terms,   
         items: req.body.items, 
         fields: req.body.fields,

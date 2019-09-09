@@ -4,13 +4,14 @@ var mongoose = require('mongoose');
 var quoteSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     projectTotal: { type: Number, required: true }, 
+    createDate: { type: Date, required: true },
     invoice_number_title: { type: String, default: "ID:" },
     header: { type: String, default: "ESTIMATE" }, //document title 
     to_title: { type: String, default: "Client" }, //client header
     logo: { type: String, required: false },
     from: { type: String, required: true },     //"Invoiced\n701 Brazos St\nAustin, TX 78748"   (name is bold, after first line, no longer bold)
     to: { type: String, required: true },
-    date: { type: Date, required: false },  //null value means current date is used
+    //date: null value means current date is used
     currency: { type: String, default: "usd" },
     number: { type: String, required: true },   //"INV-0001"
     payment_terms: { type: String, required: false },    //"Auto-Billed - Do Not Pay" (under the 'Date')

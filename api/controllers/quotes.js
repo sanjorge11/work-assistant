@@ -15,6 +15,7 @@ exports.getAllQuotes = function(req, res, next) {
                 return { 
                     _id: doc._id,
                     projectTotal: doc.projectTotal, 
+                    createDate: doc.createDate, 
                     header: doc.header, 
                     to_title: doc.to_title, 
                     logo: doc.logo,
@@ -55,6 +56,7 @@ exports.getQuote = function(req, res, next) {
         var response = {
             _id: doc._id,
             projectTotal: doc.projectTotal, 
+            createDate: doc.createDate,
             header: doc.header, 
             to_title: doc.to_title, 
             logo: doc.logo,
@@ -120,6 +122,7 @@ exports.createQuote = function(req, res, next) {
     var quote = new Quote({
         _id: quoteId,
         projectTotal: req.body.projectTotal, 
+        createDate: new Date(), 
         header: req.body.header, 
         to_title: req.body.to_title, 
         logo: req.body.logo,
@@ -154,6 +157,7 @@ exports.createQuote = function(req, res, next) {
                 quote: {
                     _id: result._id,
                     projectTotal: result.projectTotal, 
+                    createDate: result.createDate, 
                     header: result.header, 
                     to_title: result.to_title, 
                     logo: result.logo,

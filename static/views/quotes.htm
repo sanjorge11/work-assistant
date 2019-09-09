@@ -44,7 +44,7 @@
     </thead>
     <tbody>
     <tr ng-dblclick="quoteModal(quote)" ng-repeat="quote in quotesArr.quotes">
-        <td>{{ quote.date }}</td>
+        <td>{{ quote.createDate | date : "medium" }}</td>
         <td>{{ quote.to.split("\n")[0] }}</td>
         <td>{{ (quote.to.split("\n")[1] + " " + quote.to.split("\n")[2]) }}</td>
         <td>{{ quote.projectTotal | currency }}</td>

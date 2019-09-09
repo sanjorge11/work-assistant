@@ -36,13 +36,17 @@
 <table class="table table-hover display" id="quoteGrid" style="width:100%; display:none;">
     <thead>
     <tr>
+        <th>Create Date</th>
         <th>Client Name</th>
+        <th>Address</th>
         <th>Grand Total</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-dblclick="quoteModal(quote)" ng-repeat="quote in quotesArr.quotes">
+        <td>{{ quote.date }}</td>
         <td>{{ quote.to.split("\n")[0] }}</td>
+        <td>{{ (quote.to.split("\n")[1] + " " + quote.to.split("\n")[2]) }}</td>
         <td>{{ quote.projectTotal | currency }}</td>
     </tr>
     </tbody>

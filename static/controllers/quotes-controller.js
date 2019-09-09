@@ -18,6 +18,7 @@ app.controller("quotes-controller", function ($scope, $http) {
     vm.quoteModal = function(quote) { 
         $("#quoteModal").modal(); 
 
+        console.log(quote);
         var quoteTo = quote.to.split("\n"); 
         vm.clientFullName = quoteTo[0]; 
         vm.quotePDFurl = "/quotes/" + quote.quotePDFpath.split(".")[0]; 

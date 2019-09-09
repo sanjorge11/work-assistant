@@ -1,5 +1,5 @@
 
-app.controller("projects-controller", function ($scope, $http) {
+app.controller("projects-controller", function ($scope, $http, $filter) {
     
     var vm = $scope; 
     vm.clientsArr = []; 
@@ -110,13 +110,16 @@ app.controller("projects-controller", function ($scope, $http) {
             );
     
             $http.post(url, parameter).
-            then(function(data) {
+            then(function(response) {
                 $('#newProjectModal').modal("hide");   
+
+                var filteredDate = $filter('date')(response.data.project.createDate, "MMM d, y h:mm:ss a");
                 
                 gridTable.row.add( [
-                    vm.createForm.clientId,
+                    filteredDate,
                     vm.getClientInfo(vm.createForm.clientId).fullName,
-                    vm.getClientInfo(vm.createForm.clientId).fullName
+                    vm.getClientInfo(vm.createForm.clientId).fullAddress,
+                    response.data.project.description
                 ] ).draw(); 
 
                 vm.clearForm();
@@ -128,12 +131,12 @@ app.controller("projects-controller", function ($scope, $http) {
     
             var url = "http://localhost:8080/quotes"; 
 
-            var clientInfo = 
-            vm.currentClient.fullName + "\n" +
-            vm.currentClient.fullAddress + "\n" +
-            vm.currentClient.phoneNumber.length > 0 ? (vm.currentClient.phoneNumber + "\n") : "" + 
-            vm.currentClient.email;
-    
+            var clientInfo = "".concat(
+            vm.currentClient.fullName, "\n", 
+            vm.currentClient.fullAddress, "\n",
+            vm.currentClient.phoneNumber.length > 0 ? (vm.currentClient.phoneNumber.concat("\n")) : "", 
+            vm.currentClient.email);
+
             var quote = {
                 from: "Jorge A Fuentes\n704-400-8160", 
                 to: clientInfo, 

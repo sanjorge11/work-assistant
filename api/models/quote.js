@@ -10,7 +10,7 @@ var quoteSchema = mongoose.Schema({
     logo: { type: String, required: false },
     from: { type: String, required: true },     //"Invoiced\n701 Brazos St\nAustin, TX 78748"   (name is bold, after first line, no longer bold)
     to: { type: String, required: true },
-    //date:   null value means current date is used
+    date: { type: Date, required: false },  //null value means current date is used
     currency: { type: String, default: "usd" },
     number: { type: String, required: true },   //"INV-0001"
     payment_terms: { type: String, required: false },    //"Auto-Billed - Do Not Pay" (under the 'Date')

@@ -14,7 +14,9 @@ exports.getAllProjects = function(req, res, next) {
                 return { 
                     _id: doc._id, 
                     clientId: doc.clientId,
-                    description: doc.description
+                    createDate: doc.createDate, 
+                    description: doc.description,
+                    quotes: doc.quotes
                 }
             })
         };
@@ -33,6 +35,7 @@ exports.createProject = function(req, res, next) {
     var project = new Project({
         _id: new mongoose.Types.ObjectId(), 
         clientId: req.body.clientId,
+        createDate: new Date(), 
         description: req.body.description,
         quotes: []
     }); 
@@ -44,7 +47,10 @@ exports.createProject = function(req, res, next) {
             message: 'Successfully added a new project',
             project: {
                 _id: result._id, 
-                clientId: result.clientId
+                clientId: result.clientId,
+                createDate: result.createDate, 
+                description: result.description,
+                quotes: result.quotes
             }
         });
 

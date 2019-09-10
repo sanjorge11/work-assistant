@@ -14,6 +14,7 @@ exports.getAllQuotes = function(req, res, next) {
             quotes: docs.map(function(doc) {
                 return { 
                     _id: doc._id,
+                    projectId: doc.projectId,
                     projectTotal: doc.projectTotal, 
                     createDate: doc.createDate, 
                     header: doc.header, 
@@ -55,6 +56,7 @@ exports.getQuote = function(req, res, next) {
     .then(function(doc) {
         var response = {
             _id: doc._id,
+            projectId: doc.projectId, 
             projectTotal: doc.projectTotal, 
             createDate: doc.createDate,
             header: doc.header, 
@@ -75,6 +77,52 @@ exports.getQuote = function(req, res, next) {
             terms: doc.terms,
             quotePDFpath: doc.quotePDFpath
         }
+        res.status(200).json(response);
+    })
+    .catch(function(err) {
+        res.status(500).json({
+            error: err
+        });
+    }); 
+
+}
+
+exports.getProjectQuotes = function(req, res, next) { 
+    
+    var id = req.params.projectId;
+
+    Quote.find({projectId: id})
+    .select() 
+    .exec()
+    .then(function(docs) {
+        var response = {
+            count: docs.length, 
+            quotes: docs.map(function(doc) {
+                return { 
+                    _id: doc._id,
+                    projectId: doc.projectId,
+                    projectTotal: doc.projectTotal, 
+                    createDate: doc.createDate, 
+                    header: doc.header, 
+                    to_title: doc.to_title, 
+                    logo: doc.logo,
+                    from: doc.from,     
+                    to: doc.to,
+                    date: doc.date,
+                    currency: doc.currency,
+                    number: doc.number,   
+                    payment_terms: doc.payment_terms,   
+                    items: doc.items, 
+                    fields: doc.fields,
+                    tax: doc.tax,
+                    discounts: doc.discounts,
+                    shipping: doc.shipping,
+                    notes: doc.notes,
+                    terms: doc.terms,
+                    quotePDFpath: doc.quotePDFpath
+                }
+            })
+        };
         res.status(200).json(response);
     })
     .catch(function(err) {
@@ -121,6 +169,7 @@ exports.createQuote = function(req, res, next) {
 
     var quote = new Quote({
         _id: quoteId,
+        projectId: req.body.projectId,
         projectTotal: req.body.projectTotal, 
         createDate: new Date(), 
         header: req.body.header, 
@@ -130,7 +179,7 @@ exports.createQuote = function(req, res, next) {
         to: req.body.to,
         date: req.body.date,
         currency: req.body.currency,
-        number: quoteId,   
+        // number: quoteId,   
         payment_terms: req.body.payment_terms,   
         items: req.body.items, 
         fields: req.body.fields,
@@ -156,6 +205,7 @@ exports.createQuote = function(req, res, next) {
                 message: 'Successfully added a new quote',
                 quote: {
                     _id: result._id,
+                    projectId: result.projectId,
                     projectTotal: result.projectTotal, 
                     createDate: result.createDate, 
                     header: result.header, 

@@ -68,10 +68,16 @@
                                             <textarea class="form-control" rows="7" id="inputDescription" ng-model="updateForm.description" style="resize: none;"></textarea>
                                     </div>
                                     <div class="form-group col-sm-12">
-                                            <label for="inputDescription">Create Quote</label>
-                                            <div>
-                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create</button>  
-                                            </div>                                 
+                                            <label class="col-sm-12" for="projectQuote">Quotes</label>         
+                                            <!-- display:flex; justify-content:space-between; -->
+                                            <div class="form-group col-sm-12" style="display:flex;">
+                                                    <div style="margin-top:6px;">{{projectQuotes.count}} Total Quotes</div> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create Quote</button>  
+                                                    <!-- <div>
+                                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">See Quotes</button>  
+                                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create Quote</button>  
+                                                    </div> -->
+                                            </div>                      
                                      </div>
                                 </div>
                         </form>

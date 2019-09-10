@@ -26,6 +26,17 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
 
     }
 
+    vm.getProjectQuotes = function(projectId) { 
+
+        var url = "http://localhost:8080/quotes/relatedProject/" + projectId; 
+
+        $http.get(url)
+        .then(function(response) { 
+            vm.projectQuotes = response.data;
+        })
+
+    }
+
     vm.addItem = function() { 
         vm.quoteItemsArr.push({
             name: '',
@@ -132,12 +143,13 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             var url = "http://localhost:8080/quotes"; 
 
             var clientInfo = "".concat(
-            vm.currentClient.fullName, "\n", 
+            vm.currentClient.fullName, "\n\n", 
             vm.currentClient.fullAddress, "\n",
             vm.currentClient.phoneNumber.length > 0 ? (vm.currentClient.phoneNumber.concat("\n")) : "", 
             vm.currentClient.email);
-
+            
             var quote = {
+                projectId: vm.updateForm.projectId,
                 from: "Jorge A Fuentes\n704-400-8160", 
                 to: clientInfo, 
                 projectTotal: vm.getTotal(), 
@@ -186,6 +198,7 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             
             vm.currentClient = vm.getClientInfo(project.clientId); 
 
+            vm.getProjectQuotes(vm.updateForm.projectId);
         }
     
         vm.clearForm = function() { 

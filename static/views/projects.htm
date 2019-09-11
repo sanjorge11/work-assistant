@@ -71,7 +71,7 @@
                                             <label class="col-sm-12" for="projectQuote">Quotes</label>         
                                             <!-- display:flex; justify-content:space-between; -->
                                             <div class="form-group col-sm-12" style="display:flex;">
-                                                    <div style="margin-top:6px;">{{projectQuotes.count}} Total Quotes</div> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <div style="margin-top:6px;">Total Quotes: {{projectQuotes.count}} &nbsp;&nbsp; — &nbsp;&nbsp;</div> 
                                                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">Create Quote</button>  
                                                     <!-- <div>
                                                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#quoteModal">See Quotes</button>  
@@ -83,8 +83,32 @@
                         </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="pull-left btn btn-default btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete</button>
                     <button type="button" class="btn btn-default" ng-click="createProject()">Update</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+          
+        </div>
+</div>
+
+<!-- Deletion Confirmation Modal -->
+<div id="confirmDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title">Confirm Delete</h4>
+                </div>
+                <div class="modal-body text-center">
+                    Quotes will be deleted.
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default btn-danger" ng-click="deleteProject()">Confirm Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>  
                 </div>
             </div>
           

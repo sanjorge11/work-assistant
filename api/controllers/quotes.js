@@ -87,6 +87,26 @@ exports.getQuote = function(req, res, next) {
 
 }
 
+exports.deleteQuote = function(req, res, next) {
+
+    var id = req.params.quoteId; 
+
+    Quote.deleteOne({_id: id})
+    .exec()
+    .then(function(result) { 
+        res.status(200).json({
+            message: 'Quote deleted'
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    });
+
+}
+
 exports.getProjectQuotes = function(req, res, next) { 
     
     var id = req.params.projectId;

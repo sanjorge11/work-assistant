@@ -8,6 +8,8 @@ router.get('/', QuoteController.getAllQuotes);
 
 router.get('/:quoteId', QuoteController.getQuote); 
 
+router.delete('/:quoteId', QuoteController.deleteQuote); 
+
 router.get('/relatedProject/:projectId', QuoteController.getProjectQuotes); 
 
 router.get('/uploads/:quoteId', QuoteController.getQuotePDF);    //route for uploaded PDFs

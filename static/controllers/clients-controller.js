@@ -36,12 +36,15 @@ app.controller("clients-controller", function ($scope, $http) {
         then(function(response) {
             $('#newClientModal').modal("hide");    
 
-            gridTable.row.add( [
-                    vm.createForm.firstName,
-                    vm.createForm.lastName,
-                    response.data.client.fullAddress,
-                    vm.createForm.email
-            ] ).draw(); 
+            // gridTable.row.add( [
+            //         vm.createForm.firstName,
+            //         vm.createForm.lastName,
+            //         response.data.client.fullAddress,
+            //         vm.createForm.phoneNumber,
+            //         vm.createForm.email
+            // ] ).draw(); 
+
+            location.reload(true); //temporary work-around
 
             //only clear form if save was successful, 
             //don't erase typed info if user exits modal 

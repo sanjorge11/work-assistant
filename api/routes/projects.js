@@ -38,4 +38,6 @@ router.get('/', ProjectControlller.getAllProjects);
 
 router.post('/', ProjectControlller.createProject); 
 
+router.delete('/:projectId', ProjectControlller.deleteProject); 
+
 module.exports = router; 

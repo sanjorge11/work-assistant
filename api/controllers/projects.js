@@ -63,3 +63,24 @@ exports.createProject = function(req, res, next) {
     });
 
 }
+
+exports.deleteProject = function(req, res, next) {
+
+    var id = req.params.projectId; 
+
+    Project.deleteOne({_id: id})
+    .exec()
+    .then(function(result) { 
+        res.status(200).json({
+            message: 'Project deleted'
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    });
+
+}
+

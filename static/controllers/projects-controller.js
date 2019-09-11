@@ -72,7 +72,9 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
 
         $(document).ready(function() {
             gridTable = $('#projectGrid').DataTable({
-                lengthChange: false
+                lengthChange: false,
+                columnDefs: [ { type: 'date', 'targets': [0] } ],
+                order: [[ 0, 'desc' ]]
             });
 
             new $.fn.dataTable.Buttons( gridTable, {
@@ -126,16 +128,35 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
 
                 var filteredDate = $filter('date')(response.data.project.createDate, "MMM d, y h:mm:ss a");
                 
-                gridTable.row.add( [
-                    filteredDate,
-                    vm.getClientInfo(vm.createForm.clientId).fullName,
-                    vm.getClientInfo(vm.createForm.clientId).fullAddress,
-                    response.data.project.description
-                ] ).draw(); 
+                // gridTable.row.add( [
+                //     filteredDate,
+                //     vm.getClientInfo(vm.createForm.clientId).fullName,
+                //     vm.getClientInfo(vm.createForm.clientId).fullAddress,
+                //     response.data.project.description
+                // ] ).draw(); 
+
+                location.reload(true);      //temporary work-around for ng-doubleclick issue
+                //gridTable.ajax.reload();
 
                 vm.clearForm();
               });
     
+        }
+
+        vm.deleteProject = function() { 
+
+            var url = "http://localhost:8080/projects/" + vm.updateForm.projectId;
+        
+            $http.delete(url, null)
+            .then(function(data) {
+                $('#confirmDelete').modal("hide");    
+                $('#updateProjectModal').modal("hide");   
+                
+                gridTable.row( $('#'+vm.selectedIndex) )
+                .remove()
+                .draw();
+            }); 
+
         }
     
         vm.createQuote = function() { 

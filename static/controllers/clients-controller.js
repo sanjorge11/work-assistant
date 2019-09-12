@@ -80,10 +80,35 @@ app.controller("clients-controller", function ($scope, $http) {
 
     }
 
+
+    //the project and quote deletes are designed to be followed after deleting client,
+    //so we remove row in front-end on last delete in deleteClientQuotes
     vm.deleteClient = function() { 
         
        var url = "http://localhost:8080/clients/" + vm.updateForm.clientId; 
         
+        $http.delete(url, null)
+        .then(function(data) {
+            vm.deleteClientProjects(vm.updateForm.clientId);
+        }); 
+        
+    }
+
+    vm.deleteClientProjects = function(clientId) { 
+
+        var url = "http://localhost:8080/projects/relatedClient/" + clientId; 
+
+        $http.delete(url, null)
+        .then(function(data) {
+            vm.deleteClientQuotes(clientId);
+        }); 
+
+    }
+
+    vm.deleteClientQuotes = function(clientId) { 
+
+        var url = "http://localhost:8080/quotes/relatedClient/" + clientId; 
+
         $http.delete(url, null)
         .then(function(data) {
             $('#confirmDelete').modal("hide");    
@@ -93,7 +118,7 @@ app.controller("clients-controller", function ($scope, $http) {
             .remove()
             .draw();
         }); 
-        
+
     }
 
     vm.getResources = function() { 

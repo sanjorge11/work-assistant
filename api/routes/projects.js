@@ -40,4 +40,6 @@ router.post('/', ProjectControlller.createProject);
 
 router.delete('/:projectId', ProjectControlller.deleteProject); 
 
+router.delete('/relatedClient/:clientId', ProjectControlller.deleteClientProjects); 
+
 module.exports = router; 

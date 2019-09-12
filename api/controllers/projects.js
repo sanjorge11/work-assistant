@@ -84,3 +84,23 @@ exports.deleteProject = function(req, res, next) {
 
 }
 
+exports.deleteClientProjects = function(req, res, next) {
+
+    var id = req.params.clientId; 
+
+    Project.deleteMany({clientId: id})
+    .exec()
+    .then(function(result) { 
+        res.status(200).json({
+            message: 'Client projects deleted'
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    });
+
+}
+

@@ -22,7 +22,7 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
         .then(function(response) { 
             vm.clientsArr = response.data
             activate(); 
-        })
+        });
 
     }
 
@@ -33,7 +33,23 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
         $http.get(url)
         .then(function(response) { 
             vm.projectQuotes = response.data;
-        })
+        });
+
+    }
+
+    vm.deleteProjectQuotes = function(projectId) { 
+
+        var url = "http://localhost:8080/quotes/relatedProject/" + projectId; 
+
+        $http.delete(url)
+        .then(function(response) { 
+            $('#confirmDelete').modal("hide");    
+            $('#updateProjectModal').modal("hide");   
+            
+            gridTable.row( $('#'+vm.selectedIndex) )
+            .remove()
+            .draw();
+        });
 
     }
 
@@ -149,12 +165,7 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
         
             $http.delete(url, null)
             .then(function(data) {
-                $('#confirmDelete').modal("hide");    
-                $('#updateProjectModal').modal("hide");   
-                
-                gridTable.row( $('#'+vm.selectedIndex) )
-                .remove()
-                .draw();
+                vm.deleteProjectQuotes(vm.updateForm.projectId);
             }); 
 
         }
@@ -171,6 +182,7 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             
             var quote = {
                 projectId: vm.updateForm.projectId,
+                clientId: vm.updateForm.clientId,
                 from: "Jorge A Fuentes\n704-400-8160", 
                 to: clientInfo, 
                 projectTotal: vm.getTotal(), 

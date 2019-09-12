@@ -15,6 +15,7 @@ exports.getAllQuotes = function(req, res, next) {
                 return { 
                     _id: doc._id,
                     projectId: doc.projectId,
+                    clientId: doc.clientId,
                     projectTotal: doc.projectTotal, 
                     createDate: doc.createDate, 
                     header: doc.header, 
@@ -57,6 +58,7 @@ exports.getQuote = function(req, res, next) {
         var response = {
             _id: doc._id,
             projectId: doc.projectId, 
+            clientId: doc.clientId, 
             projectTotal: doc.projectTotal, 
             createDate: doc.createDate,
             header: doc.header, 
@@ -121,6 +123,7 @@ exports.getProjectQuotes = function(req, res, next) {
                 return { 
                     _id: doc._id,
                     projectId: doc.projectId,
+                    clientId: doc.clientId,
                     projectTotal: doc.projectTotal, 
                     createDate: doc.createDate, 
                     header: doc.header, 
@@ -150,6 +153,46 @@ exports.getProjectQuotes = function(req, res, next) {
             error: err
         });
     }); 
+
+}
+
+exports.deleteProjectQuotes = function(req, res, next) {
+
+    var id = req.params.projectId; 
+
+    Quote.deleteMany({projectId: id})
+    .exec()
+    .then(function(result) { 
+        res.status(200).json({
+            message: 'Project quotes deleted'
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    });
+
+}
+
+exports.deleteClientQuotes = function(req, res, next) {
+
+    var id = req.params.clientId; 
+
+    Quote.deleteMany({clientId: id})
+    .exec()
+    .then(function(result) { 
+        res.status(200).json({
+            message: 'Client quotes deleted'
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        }); 
+    });
 
 }
 
@@ -190,6 +233,7 @@ exports.createQuote = function(req, res, next) {
     var quote = new Quote({
         _id: quoteId,
         projectId: req.body.projectId,
+        clientId: req.body.clientId,
         projectTotal: req.body.projectTotal, 
         createDate: new Date(), 
         header: req.body.header, 
@@ -226,6 +270,7 @@ exports.createQuote = function(req, res, next) {
                 quote: {
                     _id: result._id,
                     projectId: result.projectId,
+                    clientId: result.clientId,
                     projectTotal: result.projectTotal, 
                     createDate: result.createDate, 
                     header: result.header, 

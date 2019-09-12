@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var quoteSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     projectId: { type: String, required: true }, 
+    clientId: { type: String, required: true }, 
     projectTotal: { type: Number, required: true }, 
     createDate: { type: Date, required: true },
     invoice_number_title: { type: String, default: "" },   //default used to be "#"

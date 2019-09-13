@@ -27,6 +27,10 @@ app.controller("quotes-controller", function ($scope, $http) {
 
     }
 
+    vm.updateQuote = function() { 
+        console.log(currentQuote); 
+    }
+
     vm.deleteQuote = function() { 
         
         var url = "http://localhost:8080/quotes/" + currentQuote._id; 

@@ -15,8 +15,8 @@ exports.getAllProjects = function(req, res, next) {
                     _id: doc._id, 
                     clientId: doc.clientId,
                     createDate: doc.createDate, 
-                    description: doc.description,
-                    quotes: doc.quotes
+                    description: doc.description
+                    //,quotes: doc.quotes
                 }
             })
         };
@@ -36,8 +36,8 @@ exports.createProject = function(req, res, next) {
         _id: new mongoose.Types.ObjectId(), 
         clientId: req.body.clientId,
         createDate: new Date(), 
-        description: req.body.description,
-        quotes: []
+        description: req.body.description
+        //,quotes: []
     }); 
 
     project.save().then(function(result) {
@@ -49,8 +49,8 @@ exports.createProject = function(req, res, next) {
                 _id: result._id, 
                 clientId: result.clientId,
                 createDate: result.createDate, 
-                description: result.description,
-                quotes: result.quotes
+                description: result.description
+                //,quotes: result.quotes
             }
         });
 
@@ -62,6 +62,32 @@ exports.createProject = function(req, res, next) {
         });
     });
 
+}
+
+exports.updateProject = function(req, res, next) {
+
+    var id = req.params.projectId;
+
+    var props = req.body;
+
+    //we dynamically create an object that has all properties we want updated
+    //$set is a propery understood by mongoose to know that the following properties
+    //are to be updated with the patch request
+    Project.updateOne({ _id: id }, { $set: props })
+    .exec()
+    .then(function(result) { 
+      console.log(result); 
+      res.status(200).json({
+        message: 'Project information updated'
+      }); 
+    })
+    .catch(function(err) { 
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    }); 
+   
 }
 
 exports.deleteProject = function(req, res, next) {

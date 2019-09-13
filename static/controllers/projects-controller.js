@@ -133,8 +133,8 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             var parameter = JSON.stringify(
                 {
                     clientId: vm.createForm.clientId,
-                    description: vm.createForm.description,
-                    quotes: []
+                    description: vm.createForm.description
+                    //,quotes: []
                 }
             );
     
@@ -157,6 +157,27 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
                 vm.clearForm();
               });
     
+        }
+
+        vm.updateProject = function() { 
+
+            var url = "http://localhost:8080/projects/" + vm.updateForm.projectId;
+
+            var parameter = JSON.stringify(
+                {
+                    description: vm.updateForm.description
+                }
+            );
+
+            $http.put(url, parameter).
+            then(function(data) {
+            $('#updateProjectModal').modal("hide");
+
+            //update gridTable
+            vm.projectsArr.projects[vm.selectedIndex].description = vm.updateForm.description; 
+
+            });
+            
         }
 
         vm.deleteProject = function() { 

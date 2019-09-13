@@ -24,7 +24,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="pull-left btn btn-default btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete</button>
-                <button type="button" class="btn btn-default pull-right" ng-click="sendEmail()">Email</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#updateQuoteModal">Update</button>
+
+                <!-- <button type="button" class="btn btn-default pull-right" ng-click="sendEmail()">Email</button> -->
                 <!-- <div class="text-center"> -->
                     <!-- <button type="button" class="btn btn-default" ng-click="">Email</button> -->
                     <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> -->
@@ -52,6 +54,136 @@
                         <button type="button" class="btn btn-default btn-danger" ng-click="deleteQuote()">Confirm Delete</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>  
+                </div>
+            </div>
+          
+        </div>
+</div>
+
+<!-- Quote Update Modal -->
+<div id="updateQuoteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Quote</h4>
+                </div>
+                <div class="modal-body row">
+                    <form name="quoteForm">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12" style="background-image: linear-gradient(to right, black , white);">
+                                <h4 style="color: white;"> Client Information </h4>
+                            </div>
+                            <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="firstNameInput">First Name</label>
+                                        <input type="text" ng-model="currentQuote.firstName" class="form-control" id="firstNameInput">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="lastNameInput">Last Name</label>
+                                        <input type="text" ng-model="currentClient.lastName" class="form-control" id="lastNameInput">
+                                    </div>
+                            </div>
+        
+                            <div class="form-group col-sm-12">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" ng-model="currentClient.address" class="form-control" id="inputAddress">
+                            </div>
+        
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="inputCity">City</label>
+                                    <input type="text" ng-model="currentClient.city" class="form-control" id="inputCity">
+                                </div>
+    
+                                <div class="form-group col-sm-4">
+                                    <label for="inputState">State</label>
+                                    <select id="inputState" class="form-control" ng-model="currentClient.state" ng-init="currentClient.state = 'Choose...'" >
+                                        <option selected>Choose...</option>
+                                        <option ng-repeat="state in resources.US_States.data" value="{{ state.abbreviation }}">{{state.name}}</option>
+                                    </select>
+                                </div>
+    
+                                <div class="form-group col-sm-2">
+                                    <label for="inputZip">Zip</label>
+                                    <input type="text" ng-model="currentClient.zip" class="form-control" id="inputZip">
+                                </div>
+                            </div>
+        
+                            <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                            <label for="inputPhone">Phone Number</label>
+                                            <input type="tel" ng-model="currentClient.phoneNumber" class="form-control" id="inputPhone" maxlength="10">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                            <label for="inputEmail">Email</label>
+                                            <input type="email" ng-model="currentClient.email" class="form-control" id="inputEmail">
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">&nbsp;</div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-12" style="background-image: linear-gradient(to right, black , white);">
+                                <h4 style="color: white;"> Items </h4>
+                            </div>
+                        </div>
+                        <div class="form-row" ng-repeat="quoteItem in currentQuote.items">
+                            <div class="form-group col-sm-6">
+                                    <label for="inputNote">Description</label>
+                                    <input type="text" ng-model="quoteItem.name" class="form-control" id="inputCity">                                
+                            </div>
+                            <div class="form-group col-sm-1">
+                                    <label for="inputNote">Quantity</label>
+                                    <input type="text" ng-model="quoteItem.quantity" class="form-control" id="inputCity">
+                            </div>
+                            <div class="form-group col-sm-2">
+                                    <label for="inputNote">Rate</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">$</span>
+                                        <input type="text" class="form-control" ng-model="quoteItem.unit_cost">
+                                    </div>
+                                    <!-- <input type="text" ng-model="" class="form-control" id="inputCity"> -->
+                            </div>
+                            <div class="form-group col-sm-2">
+                                    <label for="inputNote">Amount</label>
+                                    <textarea class="form-control" rows="1" id="inputNotes" style="resize: none;">{{quoteItem.quantity * quoteItem.unit_cost | currency}}</textarea>
+                                    <!-- <input type="text" class="form-control" id="inputCity"> -->
+                            </div>
+                            <div ng-if="quoteItemsArr.length > 1" class="form-group col-sm-1 text-center row" style="padding-top:30px;">
+                                <button type="button" class="close" ng-click="removeItem(this)">&times;</button>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <button type="button" class="btn btn-default btn-primary" ng-click="addItem()">&#43; Add Item</button>
+                            </div>
+                            <h4 class="form-group col-sm-2 pull-right">Total: {{getTotal() | currency}}</h4>
+                        </div>
+
+                        <div class="col-sm-12">&nbsp;</div>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-12" style="background-image: linear-gradient(to right, black , white);">
+                                <h4 style="color: white;"> Additional Information </h4>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                    <label for="inputNotes">Notes</label>
+                                    <textarea class="form-control" rows="4" id="inputNotes" ng-model="quoteForm.notes" style="resize: none;"></textarea>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                    <label for="inputTerms">Terms</label>
+                                    <textarea class="form-control" rows="4" id="inputTerms" ng-model="quoteForm.terms" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="updateQuote()">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
           

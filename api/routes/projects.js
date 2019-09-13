@@ -38,6 +38,8 @@ router.get('/', ProjectControlller.getAllProjects);
 
 router.post('/', ProjectControlller.createProject); 
 
+router.put('/:projectId', ProjectControlller.updateProject);
+
 router.delete('/:projectId', ProjectControlller.deleteProject); 
 
 router.delete('/relatedClient/:clientId', ProjectControlller.deleteClientProjects); 

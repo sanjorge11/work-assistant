@@ -204,7 +204,7 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             var quote = {
                 projectId: vm.updateForm.projectId,
                 clientId: vm.updateForm.clientId,
-                from: "Jorge A Fuentes\n704-400-8160", 
+                from: "Jorge A Fuentes\n\n704-400-8160\nsanjorge.fuentes@gmail.com", 
                 to: clientInfo, 
                 projectTotal: vm.getTotal(), 
                 items: vm.quoteItemsArr,

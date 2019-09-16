@@ -4,9 +4,12 @@ app.controller("quotes-controller", function ($scope, $http) {
     var vm = $scope; 
     var gridTable = null; 
     vm.resources = [];
+    vm.originalQuoteItems = [];
 
 
     vm.addItem = function() { 
+        vm.quoteForm.$setDirty();
+
         vm.quoteForm.items.push({
             name: '',
             quantity: 1,
@@ -15,6 +18,8 @@ app.controller("quotes-controller", function ($scope, $http) {
     }
 
     vm.removeItem = function(e) { 
+        vm.quoteForm.$setDirty();
+
         var rowIndex = e.$parent.$index;
 
         var firstHalf = vm.quoteForm.items.slice(0, rowIndex);
@@ -57,9 +62,12 @@ app.controller("quotes-controller", function ($scope, $http) {
         vm.clientFullName = quoteTo[0]; 
         vm.quotePDFurl = "/quotes/" + quote.quotePDFpath.split(".")[0]; 
         vm.currentQuote = quote; 
-        vm.originalQuoteItems = quote.items;
+       
+        vm.originalQuoteItems = [];
+        var itemsArr = JSON.parse(angular.toJson(quote.items)); 
+        for(var i=0; i<itemsArr.length; i++) vm.originalQuoteItems.push(itemsArr[i]);
+        
         vm.selectedIndex = index; 
-
         vm.getClient(vm.currentQuote.clientId); 
 
     }
@@ -93,10 +101,21 @@ app.controller("quotes-controller", function ($scope, $http) {
             vm.currentClient = response.data.client; 
 
             //initialize quoteForm
-            Object.assign(vm.quoteForm, vm.currentClient);
-            Object.assign(vm.quoteForm, vm.currentQuote);
-            vm.quoteForm.items = []; 
-            for(var i=0; i<vm.originalQuoteItems.length; i++) vm.quoteForm.items.push(vm.originalQuoteItems[i]);
+            for(var a in vm.currentClient) { 
+                if(a[0] !== '$' && a[0] !== '_') vm.quoteForm[a] = vm.currentClient[a]; 
+            }
+            for(var a in vm.currentQuote) { 
+                if(a[0] !== '$' && a[0] !== '_' && a !== 'items') vm.quoteForm[a] = vm.currentQuote[a]; 
+            }
+            
+            if(vm.quoteForm.items === undefined) vm.quoteForm.items = [];
+            
+            //note that we convert to JSON and then parse to remove $$hashkey references
+            vm.quoteForm.items.splice(0,vm.quoteForm.items.length); 
+            var itemsArr = JSON.parse(angular.toJson(vm.originalQuoteItems)); 
+            for(var i=0; i<itemsArr.length; i++) vm.quoteForm.items.push(itemsArr[i]); 
+
+
         }); 
         
     }
@@ -115,18 +134,25 @@ app.controller("quotes-controller", function ($scope, $http) {
     }
 
     vm.resetForm = function() {
-    
-        for(var a in vm.currentClient) { 
-            if(a !== '__v') vm.quoteForm[a] = vm.currentClient[a]; 
-        }
 
-        for(var a in vm.currentQuote) { 
-            if(a !== '__v') vm.quoteForm[a] = vm.currentQuote[a]; 
+        for(var a in vm.quoteForm) { 
+            if(a[0] !== '_' && a[0] !== '$') { 
+                if(a in vm.currentClient) { 
+                    vm.quoteForm[a] = vm.currentClient[a]; 
+                } else if (a in vm.currentQuote) { 
+                    if(a === 'items') { 
+                        vm.quoteForm.items.splice(0,vm.quoteForm.items.length); 
+                        var itemsArr = JSON.parse(angular.toJson(vm.originalQuoteItems)); 
+                        for(var i=0; i<itemsArr.length; i++) vm.quoteForm.items.push(itemsArr[i]);
+                    }
+                    else vm.quoteForm[a] = vm.currentQuote[a]; 
+                } else { 
+                    delete vm.quoteForm[a]; 
+                }
+            }
         }
 
         vm.quoteForm.$setPristine();
-
-        console.log(vm.quoteForm); 
         
     }
 

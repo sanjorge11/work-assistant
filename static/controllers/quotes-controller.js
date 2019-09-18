@@ -50,7 +50,6 @@ app.controller("quotes-controller", function ($scope, $http) {
         $http.get("http://localhost:8080/quotes")
         .then(function(response) {
             vm.quotesArr = response.data;
-            console.log(vm.quotesArr); 
             if(gridTable === null) vm.activateGrid();
         });
 

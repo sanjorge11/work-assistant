@@ -50,6 +50,7 @@ app.controller("quotes-controller", function ($scope, $http) {
         $http.get("http://localhost:8080/quotes")
         .then(function(response) {
             vm.quotesArr = response.data;
+            console.log(vm.quotesArr); 
             if(gridTable === null) vm.activateGrid();
         });
 
@@ -72,9 +73,47 @@ app.controller("quotes-controller", function ($scope, $http) {
 
     }
 
-    vm.updateQuote = function() { 
-        console.log(vm.quoteForm); 
+    vm.createQuote = function() { 
+    
+        var url = "http://localhost:8080/quotes"; 
+
+        vm.quoteForm.projectTotal = vm.getTotal(); 
+
+        //remove $$hashkey and other properties added by angular
+        var parameter = angular.toJson(vm.quoteForm);
+
+        $http.post(url, parameter).
+        then(function(data) {
+            $('#updateQuoteModal').modal("hide");    
+            $('#quoteModal').modal("hide");    
+
+            location.reload(true);      //temporary work-around for ng-doubleclick issue
+        });
+        
     }
+
+    /*
+    vm.updateQuote = function() { 
+
+        var url = "http://localhost:8080/quotes/" + vm.currentQuote._id;
+    
+        var parameter = angular.toJson(vm.quoteForm);
+
+        $http.put(url, parameter).
+        then(function(data) {
+            $('#updateQuoteModal').modal("hide");
+
+            // //update gridTable
+            // vm.clientsArr.clients[vm.selectedIndex].firstName = vm.updateForm.firstName; 
+            // vm.clientsArr.clients[vm.selectedIndex].lastName = vm.updateForm.lastName; 
+            // vm.clientsArr.clients[vm.selectedIndex].address = vm.updateForm.address; 
+            // vm.clientsArr.clients[vm.selectedIndex].email = vm.updateForm.email; 
+
+        });
+
+        // console.log(vm.currentQuote); 
+        // console.log(JSON.parse(parameter)); 
+    } */
 
     vm.deleteQuote = function() { 
         

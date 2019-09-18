@@ -313,6 +313,71 @@ exports.createQuote = function(req, res, next) {
 
 }
 
+/*
+exports.updateQuote = function(req, res, next) {
+
+    var quoteId = req.params.quoteId;
+    var props = req.body;
+    
+
+    var quote = new Quote({
+        _id: quoteId,
+        projectId: req.body.projectId,
+        clientId: req.body.clientId,
+        projectTotal: req.body.projectTotal, 
+        createDate: new Date(), 
+        header: req.body.header, 
+        to_title: req.body.to_title, 
+        logo: req.body.logo,
+        from: req.body.from,     
+        to: req.body.to,
+        date: req.body.date,
+        currency: req.body.currency,
+        // number: quoteId,   
+        payment_terms: req.body.payment_terms,   
+        items: req.body.items, 
+        fields: req.body.fields,
+        tax: req.body.tax,
+        discounts: req.body.discounts,
+        shipping: req.body.shipping,
+        notes: req.body.notes,
+        terms: req.body.terms,
+        quotePDFpath: null
+    }); 
+
+    generateQuote(quote, (quoteId+'.pdf'), function() {
+        console.log("Saved Quote to " + (quoteId+'.pdf'));
+
+        var pdfPath = 'uploads/'+(quoteId+'.pdf'); 
+
+        quote.quotePDFpath = pdfPath; 
+
+        Quote.updateOne({ _id: quoteId }, { $set: props })
+        .exec()
+        .then(function(result) { 
+          console.log(result); 
+          res.status(200).json({
+            message: 'Quote updated'
+          }); 
+        })
+        .catch(function(err) { 
+          console.log(err);
+          res.status(500).json({
+            error: err
+          });
+        }); 
+
+    }, function(error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Failed to generate PDF", 
+            error: err
+        }); 
+    }); 
+
+} */
+
 function generateQuote(quote, filename, success, error) {
     var postData = JSON.stringify(quote);
     var options = {

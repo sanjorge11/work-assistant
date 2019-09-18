@@ -8,6 +8,8 @@ router.get('/', QuoteController.getAllQuotes);
 
 router.get('/:quoteId', QuoteController.getQuote); 
 
+//router.put('/:quoteId', QuoteController.updateQuote); 
+
 router.delete('/:quoteId', QuoteController.deleteQuote); 
 
 router.get('/relatedProject/:projectId', QuoteController.getProjectQuotes); 

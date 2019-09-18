@@ -152,6 +152,21 @@ app.controller("clients-controller", function ($scope, $http) {
         vm.updateForm.zip = client.zip;
         vm.updateForm.phoneNumber = client.phoneNumber;
         vm.updateForm.email = client.email; 
+
+        //clone the object for reverting with resetForm()
+        vm.updateFormOriginal = JSON.parse(angular.toJson(vm.updateForm));
+        
+    }
+
+    vm.resetForm = function() {
+
+        for(var a in vm.updateForm) { 
+            if(a[0] !== '_' && a[0] !== '$') { 
+                vm.updateForm[a] = vm.updateFormOriginal[a]; 
+            }
+        }
+
+        vm.updateForm.$setPristine();
         
     }
 

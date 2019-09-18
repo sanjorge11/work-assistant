@@ -84,6 +84,14 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
         return sum; 
     }
 
+    vm.resetForm = function() {
+
+        vm.updateForm.description = vm.originalDescription; 
+
+        vm.updateForm.$setPristine();
+        
+    }
+
     vm.activateGrid = function() { 
 
         $(document).ready(function() {
@@ -249,6 +257,7 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             vm.updateForm.clientId = project.clientId; 
             vm.updateForm.clientName = project.clientName; 
             vm.updateForm.description = project.description;
+            vm.originalDescription = vm.updateForm.description; 
             
             vm.currentClient = vm.getClientInfo(project.clientId); 
 

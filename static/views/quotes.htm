@@ -153,7 +153,7 @@
                                     <textarea class="form-control" rows="1" id="inputNotes" style="resize: none;">{{quoteItem.quantity * quoteItem.unit_cost | currency}}</textarea>
                                     <!-- <input type="text" class="form-control" id="inputCity"> -->
                             </div>
-                            <div ng-if="currentQuote.items.length > 1" class="form-group col-sm-1 text-center row" style="padding-top:30px;">
+                            <div ng-if="quoteForm.items.length > 1" class="form-group col-sm-1 text-center row" style="padding-top:30px;">
                                 <button type="button" class="close" ng-click="removeItem(this)">&times;</button>
                             </div>
                         </div>

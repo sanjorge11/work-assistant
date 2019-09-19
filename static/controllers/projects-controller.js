@@ -92,6 +92,18 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
         
     }
 
+    vm.resetClientInfo = function() { 
+
+        for(var a in vm.quoteForm) { 
+            if(a[0] !== '_' && a[0] !== '$') { 
+                vm.quoteForm[a] = vm.originalCurrentClient[a]; 
+            }
+        }
+
+        vm.quoteForm.$setPristine();
+
+    }
+
     vm.activateGrid = function() { 
 
         $(document).ready(function() {
@@ -260,6 +272,16 @@ app.controller("projects-controller", function ($scope, $http, $filter) {
             vm.originalDescription = vm.updateForm.description; 
             
             vm.currentClient = vm.getClientInfo(project.clientId); 
+            vm.originalCurrentClient = JSON.parse(angular.toJson(vm.currentClient)); 
+
+            vm.quoteForm.firstName = vm.currentClient.firstName; 
+            vm.quoteForm.lastName = vm.currentClient.lastName; 
+            vm.quoteForm.address = vm.currentClient.address; 
+            vm.quoteForm.city = vm.currentClient.city; 
+            vm.quoteForm.state = vm.currentClient.state; 
+            vm.quoteForm.zip = vm.currentClient.zip; 
+            vm.quoteForm.phoneNumber = vm.currentClient.phoneNumber; 
+            vm.quoteForm.email = vm.currentClient.email; 
 
             vm.getProjectQuotes(vm.updateForm.projectId);
         }

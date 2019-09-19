@@ -79,7 +79,7 @@
                             <div class="form-row">
                                     <div class="form-group col-sm-6">
                                         <label for="firstNameInput">First Name</label>
-                                        <input type="text" ng-model="quoteForm.firstName" class="form-control" id="firstNameInput">
+                                        <input ng-required="true" type="text" ng-model="quoteForm.firstName" class="form-control" id="firstNameInput">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label for="lastNameInput">Last Name</label>
@@ -89,18 +89,18 @@
         
                             <div class="form-group col-sm-12">
                                 <label for="inputAddress">Address</label>
-                                <input type="text" ng-model="quoteForm.address" class="form-control" id="inputAddress">
+                                <input ng-required="true" type="text" ng-model="quoteForm.address" class="form-control" id="inputAddress">
                             </div>
         
                             <div class="form-row">
                                 <div class="form-group col-sm-6">
                                     <label for="inputCity">City</label>
-                                    <input type="text" ng-model="quoteForm.city" class="form-control" id="inputCity">
+                                    <input ng-required="true" type="text" ng-model="quoteForm.city" class="form-control" id="inputCity">
                                 </div>
     
                                 <div class="form-group col-sm-4">
                                     <label for="inputState">State</label>
-                                    <select id="inputState" class="form-control" ng-model="quoteForm.state" ng-init="quoteForm.state = 'Choose...'" >
+                                    <select ng-required="true" id="inputState" class="form-control" ng-model="quoteForm.state" ng-init="quoteForm.state = 'Choose...'" >
                                         <option selected>Choose...</option>
                                         <option ng-repeat="state in resources.US_States.data" value="{{ state.abbreviation }}">{{state.name}}</option>
                                     </select>
@@ -108,7 +108,7 @@
     
                                 <div class="form-group col-sm-2">
                                     <label for="inputZip">Zip</label>
-                                    <input type="text" ng-model="quoteForm.zip" class="form-control" id="inputZip">
+                                    <input ng-required="true" type="text" ng-model="quoteForm.zip" class="form-control" id="inputZip">
                                 </div>
                             </div>
         
@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="form-group col-sm-6">
                                             <label for="inputEmail">Email</label>
-                                            <input type="email" ng-model="quoteForm.email" class="form-control" id="inputEmail">
+                                            <input ng-required="true" type="email" ng-model="quoteForm.email" class="form-control" id="inputEmail">
                                     </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" ng-click="resetForm()" ng-disabled="!quoteForm.$dirty">Reset</button>
-                    <button type="button" class="btn btn-default" ng-click="createQuote()">Save</button>
+                    <button ng-disabled="quoteForm.$invalid || quoteForm.state === 'Choose...'" type="button" class="btn btn-default" ng-click="createQuote()">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
